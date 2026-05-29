@@ -1,699 +1,862 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Treebo — Estratégia Baseada em Ciência Emocional</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Treebo — O Emocional Ganha Qualquer Jogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --preto: #0d0c0b;
-      --quente: #1a1512;
-      --ouro: #c9922a;
-      --ouro-claro: #e8b552;
-      --creme: #f4ede3;
-      --creme-suave: #faf7f3;
-      --texto: #2e2720;
-      --cinza: #7a6e63;
+      --preto: #0a0908;
+      --branco: #f5f0e8;
+      --ouro: #b8842a;
+      --ouro-claro: #d4a84b;
+      --cinza: #6b6560;
+      --borda: rgba(184,132,42,0.18);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Barlow', sans-serif;
       background: var(--preto);
-      color: var(--creme);
+      color: var(--branco);
       overflow-x: hidden;
+      cursor: none;
     }
 
-    /* ── NAV ── */
+    /* CURSOR CUSTOMIZADO */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--ouro);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(184,132,42,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: all 0.12s ease;
+    }
+    body:hover .cursor { opacity: 1; }
+    a:hover ~ .cursor, button:hover ~ .cursor { width: 16px; height: 16px; }
+
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1.4rem 5vw;
-      background: rgba(13,12,11,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(201,146,42,0.15);
+      padding: 1.8rem 5vw;
+      mix-blend-mode: difference;
     }
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      color: var(--ouro-claro);
-    }
-    .logo span { color: var(--creme); }
-    nav ul { list-style: none; display: flex; gap: 2.5rem; }
-    nav ul a {
-      text-decoration: none;
-      color: rgba(244,237,227,0.65);
-      font-size: 0.85rem;
-      font-weight: 500;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.1rem; font-weight: 700;
       letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 0.25s;
+      color: var(--branco);
+      text-decoration: none;
     }
-    nav ul a:hover { color: var(--ouro-claro); }
+    .nav-links {
+      display: flex; gap: 3rem; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(245,240,232,0.82);
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--branco); }
     .nav-cta {
-      background: var(--ouro);
-      color: var(--preto) !important;
-      padding: 0.55rem 1.4rem;
-      border-radius: 2px;
-      font-weight: 700 !important;
-      opacity: 1 !important;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ouro-claro) !important;
+      border-bottom: 1px solid var(--ouro);
+      padding-bottom: 2px;
     }
-    .nav-cta:hover { background: var(--ouro-claro) !important; color: var(--preto) !important; }
+
+    /* SEÇÃO BASE */
+    .panel {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 12vh 5vw;
+      position: relative;
+    }
 
     /* ── HERO ── */
     .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 120px 5vw 80px;
-      position: relative;
+      background: var(--preto);
       overflow: hidden;
     }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background:
-        radial-gradient(ellipse 60% 70% at 70% 50%, rgba(201,146,42,0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,146,42,0.05) 0%, transparent 60%),
-        var(--preto);
-    }
     .hero-noise {
-      position: absolute; inset: 0; z-index: 0; opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.025; pointer-events: none;
     }
-    .hero-content { position: relative; z-index: 1; }
-    .hero-badge {
-      display: inline-block;
-      border: 1px solid rgba(201,146,42,0.4);
-      color: var(--ouro-claro);
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 0.4rem 1rem;
-      border-radius: 2px;
-      margin-bottom: 2rem;
-      animation: fadeUp 0.8s ease both;
+    .hero-line-v {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(184,132,42,0.35) 30%, rgba(184,132,42,0.2) 70%, transparent);
     }
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.8rem, 5vw, 4.4rem);
-      font-weight: 900;
-      line-height: 1.1;
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 1.2rem;
+      margin-bottom: 4rem;
+      opacity: 0; animation: fadeIn 1s 0.3s forwards;
+    }
+    .hero-eyebrow-line { width: 48px; height: 1px; background: var(--ouro); }
+    .hero-eyebrow span {
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ouro);
+    }
+    .hero-h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(4rem, 9vw, 9rem);
+      font-weight: 700;
+      line-height: 0.95;
       letter-spacing: -0.03em;
-      margin-bottom: 1.8rem;
-      animation: fadeUp 0.8s 0.15s ease both;
+      max-width: 900px;
+      opacity: 0; animation: slideUp 1s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
     }
-    .hero h1 em {
-      font-style: normal;
-      color: var(--ouro-claro);
-      position: relative;
-    }
-    .hero h1 em::after {
-      content: '';
-      position: absolute; bottom: 2px; left: 0; right: 0; height: 2px;
-      background: var(--ouro);
-      transform: scaleX(0); transform-origin: left;
-      animation: lineReveal 0.6s 1s ease forwards;
+    .hero-h1 .italic { font-style: italic; color: var(--ouro-claro); }
+    .hero-sub-row {
+      margin-top: 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      max-width: 900px;
+      opacity: 0; animation: fadeIn 1s 1s forwards;
     }
     .hero-sub {
-      font-size: 1.05rem;
-      line-height: 1.75;
-      color: rgba(244,237,227,0.65);
-      max-width: 480px;
-      margin-bottom: 2.5rem;
-      animation: fadeUp 0.8s 0.3s ease both;
+      font-size: 1.1rem; line-height: 1.85;
+      color: rgba(245,240,232,0.82);
+      font-weight: 400;
     }
-    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.8s 0.45s ease both; }
-    .btn-primary {
+    .hero-sub strong { color: var(--branco); font-weight: 500; }
+    .hero-cta-group { display: flex; flex-direction: column; justify-content: flex-end; gap: 1.5rem; }
+    .btn-main {
+      display: inline-block;
       background: var(--ouro);
       color: var(--preto);
-      padding: 0.9rem 2rem;
-      border: none; border-radius: 2px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem; font-weight: 700;
-      letter-spacing: 0.04em; text-transform: uppercase;
-      cursor: pointer; text-decoration: none;
-      transition: background 0.25s, transform 0.2s;
+      padding: 1.1rem 2.5rem;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none;
+      border: none; cursor: none;
+      transition: background 0.2s, transform 0.15s;
+      align-self: flex-start;
     }
-    .btn-primary:hover { background: var(--ouro-claro); transform: translateY(-2px); }
+    .btn-main:hover { background: var(--ouro-claro); transform: translateY(-2px); }
     .btn-ghost {
-      background: transparent;
-      color: var(--creme);
-      padding: 0.9rem 2rem;
-      border: 1px solid rgba(244,237,227,0.3); border-radius: 2px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem; font-weight: 500;
-      letter-spacing: 0.04em; text-transform: uppercase;
-      cursor: pointer; text-decoration: none;
-      transition: border-color 0.25s, color 0.25s;
+      display: inline-block;
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(245,240,232,0.75);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,240,232,0.4);
+      padding-bottom: 2px;
+      align-self: flex-start;
+      transition: color 0.2s, border-color 0.2s;
     }
-    .btn-ghost:hover { border-color: var(--ouro); color: var(--ouro-claro); }
+    .btn-ghost:hover { color: var(--branco); border-color: var(--branco); }
 
-    .hero-visual {
-      position: relative; z-index: 1;
-      display: flex; justify-content: center; align-items: center;
-      animation: fadeUp 0.8s 0.3s ease both;
-    }
-    .orb-container { position: relative; width: 380px; height: 380px; }
-    .orb {
-      position: absolute; inset: 0;
-      border-radius: 50%;
-      border: 1px solid rgba(201,146,42,0.25);
-      animation: pulse 4s ease-in-out infinite;
-    }
-    .orb:nth-child(2) { inset: 20px; border-color: rgba(201,146,42,0.2); animation-delay: 0.5s; }
-    .orb:nth-child(3) { inset: 55px; border-color: rgba(201,146,42,0.35); animation-delay: 1s; }
-    .orb-core {
-      position: absolute; inset: 90px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(201,146,42,0.35), rgba(201,146,42,0.05));
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 1.5rem;
-    }
-    .orb-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .orb-quote {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
-      font-style: italic;
-      line-height: 1.5;
-      color: var(--ouro-claro);
-    }
-    .hero-stats {
-      position: absolute; bottom: -1rem;
-      display: flex; gap: 2rem;
-      animation: fadeUp 0.8s 0.6s ease both;
-    }
-    .stat { text-align: center; }
-    .stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem; font-weight: 900;
-      color: var(--ouro-claro);
-    }
-    .stat-label { font-size: 0.72rem; color: rgba(244,237,227,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
-
-    /* ── SECTION BASE ── */
-    section { padding: 7rem 5vw; }
-    .section-label {
-      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--ouro); margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 900; line-height: 1.15;
-      letter-spacing: -0.02em;
-    }
-
-    /* ── PROBLEMA ── */
-    .problema { background: var(--quente); }
-    .problema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-    .problema-text .section-title { margin-bottom: 1.5rem; }
-    .problema-text p { color: rgba(244,237,227,0.65); line-height: 1.8; margin-bottom: 1.2rem; font-size: 1rem; }
-    .problema-cards { display: flex; flex-direction: column; gap: 1rem; }
-    .prob-card {
-      background: rgba(201,146,42,0.06);
-      border: 1px solid rgba(201,146,42,0.15);
-      border-left: 3px solid var(--ouro);
-      border-radius: 4px;
-      padding: 1.2rem 1.5rem;
-    }
-    .prob-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--creme); }
-    .prob-card p { font-size: 0.85rem; color: rgba(244,237,227,0.55); line-height: 1.6; }
-
-    /* ── SOLUÇÃO ── */
-    .solucao { background: var(--preto); }
-    .solucao-header { text-align: center; max-width: 680px; margin: 0 auto 4rem; }
-    .solucao-header .section-title { margin-bottom: 1rem; }
-    .solucao-header p { color: rgba(244,237,227,0.6); line-height: 1.8; }
-    .solucao-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .sol-card {
-      background: linear-gradient(135deg, rgba(201,146,42,0.08), rgba(201,146,42,0.02));
-      border: 1px solid rgba(201,146,42,0.15);
-      border-radius: 6px;
-      padding: 2rem;
-      transition: transform 0.3s, border-color 0.3s;
-    }
-    .sol-card:hover { transform: translateY(-6px); border-color: rgba(201,146,42,0.4); }
-    .sol-icon { font-size: 2rem; margin-bottom: 1rem; }
-    .sol-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.7rem; }
-    .sol-card p { font-size: 0.88rem; color: rgba(244,237,227,0.6); line-height: 1.7; }
-
-    /* ── COMO FUNCIONA ── */
-    .como { background: var(--quente); }
-    .como-header { margin-bottom: 4rem; }
-    .como-header .section-title { margin-bottom: 1rem; max-width: 500px; }
-    .como-header p { color: rgba(244,237,227,0.6); max-width: 480px; line-height: 1.75; }
-    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; position: relative; }
-    .steps::before {
-      content: '';
-      position: absolute; top: 2rem; left: 2rem; right: 2rem; height: 1px;
-      background: linear-gradient(to right, transparent, rgba(201,146,42,0.4), transparent);
-    }
-    .step { position: relative; }
-    .step-num {
-      width: 4rem; height: 4rem;
-      background: var(--ouro);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem; font-weight: 900;
+    /* ── NÚMEROS ── */
+    .numeros-panel {
+      background: var(--branco);
       color: var(--preto);
-      margin-bottom: 1.2rem;
-      position: relative; z-index: 1;
+      padding: 8vh 5vw;
+      min-height: auto;
     }
-    .step h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .step p { font-size: 0.85rem; color: rgba(244,237,227,0.6); line-height: 1.65; }
+    .numeros-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      border-left: 1px solid rgba(10,9,8,0.12);
+    }
+    .num-item {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid rgba(10,9,8,0.12);
+      border-top: 1px solid rgba(10,9,8,0.12);
+      border-bottom: 1px solid rgba(10,9,8,0.12);
+    }
+    .num-val {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 3.8rem; font-weight: 700;
+      color: var(--preto);
+      line-height: 1; margin-bottom: 1rem;
+    }
+    .num-val span { color: var(--ouro); }
+    .num-label {
+      font-size: 0.95rem; line-height: 1.65;
+      color: rgba(10,9,8,0.72); font-weight: 400;
+    }
 
-    /* ── DIFERENCIAIS ── */
-    .diff { background: var(--preto); }
-    .diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-    .diff-visual {
-      background: linear-gradient(135deg, rgba(201,146,42,0.1), rgba(201,146,42,0.02));
-      border: 1px solid rgba(201,146,42,0.2);
-      border-radius: 8px; padding: 3rem;
-    }
-    .compare-row {
-      display: grid; grid-template-columns: 1fr auto 1fr;
-      align-items: center; gap: 1rem;
-      padding: 0.8rem 0;
-      border-bottom: 1px solid rgba(244,237,227,0.06);
-    }
-    .compare-row:last-child { border: none; }
-    .compare-bad { font-size: 0.85rem; color: rgba(244,237,227,0.4); text-align: right; }
-    .compare-vs {
-      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
-      color: rgba(201,146,42,0.5); white-space: nowrap;
-    }
-    .compare-good { font-size: 0.85rem; color: var(--creme); font-weight: 500; }
-    .compare-header { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(244,237,227,0.35); }
-    .diff-text .section-title { margin-bottom: 1.5rem; }
-    .diff-text p { color: rgba(244,237,227,0.65); line-height: 1.8; margin-bottom: 1.2rem; }
-    .diff-list { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
-    .diff-list li {
-      display: flex; align-items: flex-start; gap: 0.8rem;
-      font-size: 0.9rem; color: rgba(244,237,227,0.75); line-height: 1.6;
-    }
-    .diff-list li::before { content: '✦'; color: var(--ouro); margin-top: 0.15rem; flex-shrink: 0; }
-
-    /* ── RESULTADOS ── */
-    .resultados {
-      background: linear-gradient(135deg, rgba(201,146,42,0.12), rgba(201,146,42,0.04));
-      border-top: 1px solid rgba(201,146,42,0.2);
-      border-bottom: 1px solid rgba(201,146,42,0.2);
-    }
-    .resultados-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: center; }
-    .res-item { padding: 1.5rem; }
-    .res-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem; font-weight: 900;
-      color: var(--ouro-claro);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-    .res-label { font-size: 0.85rem; color: rgba(244,237,227,0.6); line-height: 1.5; }
-
-    /* ── SLOGAN ── */
-    .slogan-section {
+    /* ── STATEMENT (scroll reveal sections) ── */
+    .statement {
       background: var(--preto);
-      text-align: center; padding: 8rem 5vw;
-      position: relative; overflow: hidden;
+      border-top: 1px solid var(--borda);
     }
-    .slogan-bg {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,146,42,0.07), transparent);
+    .statement-inner {
+      max-width: 1100px;
     }
-    .slogan-section .section-label { margin-bottom: 2rem; }
-    .slogan-text {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.2rem, 5vw, 4.5rem);
-      font-weight: 900; line-height: 1.2;
-      letter-spacing: -0.03em;
-      position: relative; z-index: 1;
+    .section-tag {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 3rem;
     }
-    .slogan-text em { font-style: normal; color: var(--ouro-claro); }
+    .section-tag .tag-line { width: 32px; height: 1px; background: var(--ouro); }
+    .section-tag span {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ouro);
+    }
+    .statement-h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2.5rem, 5vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+    }
+    .statement-h2 em { font-style: italic; color: var(--ouro-claro); }
+    .statement-body {
+      margin-top: 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .statement-p {
+      font-size: 1.05rem; line-height: 1.85;
+      color: rgba(245,240,232,0.82);
+      font-weight: 400;
+    }
+    .statement-p strong { color: var(--branco); font-weight: 500; }
 
-    /* ── CTA / CONTATO ── */
-    .cta { background: var(--quente); }
-    .cta-inner {
-      max-width: 700px; margin: 0 auto; text-align: center;
+    /* ── PROB CARDS ── */
+    .prob-cards-grid {
+      display: flex; flex-direction: column;
+      border: 1px solid var(--borda);
     }
-    .cta .section-title { margin-bottom: 1rem; }
-    .cta p { color: rgba(244,237,227,0.6); line-height: 1.8; margin-bottom: 2.5rem; }
-    .cta-form { display: flex; flex-direction: column; gap: 1rem; max-width: 480px; margin: 0 auto; }
-    .cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .field {
-      display: flex; flex-direction: column; gap: 0.4rem;
+    .prob-card {
+      padding: 1.8rem 2rem;
+      border-bottom: 1px solid var(--borda);
+      transition: background 0.25s;
     }
-    .field label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(244,237,227,0.5); }
+    .prob-card:last-child { border: none; }
+    .prob-card:hover { background: rgba(184,132,42,0.05); }
+    .prob-tag {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ouro); margin-bottom: 0.6rem;
+    }
+    .prob-card h4 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 0.5rem; color: var(--branco);
+      line-height: 1.35;
+    }
+    .prob-card p {
+      font-size: 0.95rem; color: rgba(245,240,232,0.78);
+      line-height: 1.75; font-weight: 400;
+    }
+
+    /* ── SOLUÇÃO FULL ── */
+    .solucao-panel {
+      background: var(--branco);
+      color: var(--preto);
+    }
+    .solucao-panel .section-tag .tag-line { background: var(--ouro); }
+    .solucao-panel .section-tag span { color: var(--ouro); }
+    .solucao-panel .statement-h2 { color: var(--preto); }
+    .solucao-panel .statement-h2 em { color: var(--ouro); }
+    .sol-cards {
+      margin-top: 5rem;
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      border-left: 1px solid rgba(10,9,8,0.1);
+    }
+    .sol-card {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid rgba(10,9,8,0.1);
+      border-top: 1px solid rgba(10,9,8,0.1);
+      border-bottom: 1px solid rgba(10,9,8,0.1);
+    }
+    .sol-num {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 4rem; font-weight: 700;
+      color: rgba(10,9,8,0.08);
+      line-height: 1; margin-bottom: 1.5rem;
+    }
+    .sol-card h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 0.8rem; color: var(--preto);
+      line-height: 1.3;
+    }
+    .sol-card p {
+      font-size: 1rem; line-height: 1.8;
+      color: rgba(10,9,8,0.72); font-weight: 400;
+    }
+
+    /* ── PROCESSO ── */
+    .processo-panel { background: var(--preto); border-top: 1px solid var(--borda); }
+    .steps-list {
+      margin-top: 4rem;
+      display: flex; flex-direction: column;
+    }
+    .step-row {
+      display: grid;
+      grid-template-columns: 5rem 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--borda);
+      align-items: start;
+    }
+    .step-row:first-child { border-top: 1px solid var(--borda); }
+    .step-n {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 2.5rem; font-weight: 700;
+      color: rgba(184,132,42,0.25);
+      line-height: 1;
+      transition: color 0.3s;
+    }
+    .step-row:hover .step-n { color: var(--ouro); }
+    .step-content h3 {
+      font-size: 1.15rem; font-weight: 600;
+      margin-bottom: 0.6rem; color: var(--branco);
+    }
+    .step-content p {
+      font-size: 1rem; line-height: 1.8;
+      color: rgba(245,240,232,0.78); font-weight: 400;
+    }
+
+    /* ── COMPARATIVO ── */
+    .comp-panel {
+      background: var(--preto);
+      border-top: 1px solid var(--borda);
+    }
+    .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; margin-top: 5rem; }
+    .comp-table { border: 1px solid var(--borda); }
+    .comp-header {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      padding: 1.2rem 2rem;
+      background: rgba(184,132,42,0.10);
+      border-bottom: 1px solid rgba(184,132,42,0.3);
+    }
+    .comp-header span {
+      font-size: 0.78rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(245,240,232,0.6);
+      font-weight: 600;
+    }
+    .comp-header span:last-child { text-align: right; color: var(--ouro-claro); }
+    .comp-row {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; gap: 1.5rem;
+      padding: 1.1rem 2rem;
+      border-bottom: 1px solid rgba(184,132,42,0.1);
+    }
+    .comp-row:last-child { border: none; }
+    .c-bad {
+      font-size: 0.95rem;
+      color: rgba(245,240,232,0.55);
+      text-decoration: line-through;
+      text-decoration-color: rgba(184,132,42,0.6);
+      text-decoration-thickness: 1.5px;
+    }
+    .c-vs {
+      font-size: 0.7rem; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ouro);
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid rgba(184,132,42,0.35);
+    }
+    .c-good { font-size: 1rem; color: var(--branco); font-weight: 600; text-align: right; }
+
+    .diff-list { display: flex; flex-direction: column; gap: 1.2rem; }
+    .diff-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.3rem 1.5rem;
+      border: 1px solid var(--borda);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .diff-item:hover { background: rgba(184,132,42,0.05); border-color: rgba(184,132,42,0.35); }
+    .diff-bullet { color: var(--ouro-claro); flex-shrink: 0; margin-top: 0.2rem; font-size: 0.8rem; }
+    .diff-item p { font-size: 1rem; line-height: 1.7; color: rgba(245,240,232,0.85); font-weight: 400; }
+    .diff-item p strong { color: var(--branco); font-weight: 600; }
+
+    /* ── STATEMENT QUOTE ── */
+    .quote-panel {
+      background: var(--ouro);
+      color: var(--preto);
+      min-height: 60vh;
+      display: flex; align-items: center;
+      padding: 12vh 5vw;
+    }
+    .quote-inner { max-width: 900px; }
+    .quote-tag { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(10,9,8,0.65); margin-bottom: 2.5rem; }
+    .quote-text {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2.2rem, 5vw, 5rem);
+      font-weight: 700; line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--preto);
+    }
+    .quote-text em { font-style: italic; }
+
+    /* ── CTA ── */
+    .cta-panel { background: var(--preto); border-top: 1px solid var(--borda); }
+    .cta-inner { max-width: 780px; }
+    .cta-h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 700; line-height: 1.1;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.5rem;
+    }
+    .cta-h2 em { font-style: italic; color: var(--ouro-claro); }
+    .cta-sub {
+      font-size: 1.1rem; line-height: 1.85;
+      color: rgba(245,240,232,0.82);
+      font-weight: 400; margin-bottom: 3.5rem;
+      max-width: 560px;
+    }
+    .cta-sub strong { color: var(--branco); font-weight: 500; }
+    .form-wrap { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(245,240,232,0.65);
+    }
     .field input, .field select, .field textarea {
-      background: rgba(244,237,227,0.05);
-      border: 1px solid rgba(201,146,42,0.2);
-      border-radius: 3px;
-      color: var(--creme);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      padding: 0.75rem 1rem;
+      background: rgba(245,240,232,0.06);
+      border: 1px solid rgba(184,132,42,0.35);
+      color: var(--branco);
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem; font-weight: 400;
+      padding: 0.95rem 1.2rem;
       outline: none;
-      transition: border-color 0.25s;
+      transition: border-color 0.2s, background 0.2s;
     }
     .field input:focus, .field select:focus, .field textarea:focus {
-      border-color: var(--ouro);
+      border-color: var(--ouro-claro);
+      background: rgba(184,132,42,0.10);
     }
-    .field select option { background: var(--quente); }
-    .field textarea { resize: vertical; min-height: 100px; }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(245,240,232,0.38); }
+    .field select option { background: #1a1510; }
+    .field textarea { min-height: 100px; resize: vertical; }
 
     /* ── FOOTER ── */
     footer {
-      background: #080806;
-      border-top: 1px solid rgba(201,146,42,0.12);
+      background: #050403;
+      border-top: 1px solid var(--borda);
       padding: 3rem 5vw;
       display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 1rem;
+      flex-wrap: wrap; gap: 1.5rem;
     }
     .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem; font-weight: 900;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem; font-weight: 700;
       color: var(--ouro-claro);
+      letter-spacing: 0.06em;
     }
-    .footer-logo span { color: rgba(244,237,227,0.4); }
-    .footer-slogan { font-size: 0.8rem; color: rgba(244,237,227,0.3); margin-top: 0.25rem; }
-    footer p { font-size: 0.78rem; color: rgba(244,237,227,0.25); }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50%      { transform: scale(1.03); opacity: 0.7; }
-    }
-    @keyframes lineReveal {
-      to { transform: scaleX(1); }
-    }
+    .footer-tagline { font-size: 0.82rem; color: rgba(245,240,232,0.45); margin-top: 0.3rem; font-style: italic; }
+    footer p { font-size: 0.82rem; color: rgba(245,240,232,0.38); }
 
     /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0; transform: translateY(40px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.85s ease, transform 0.85s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+    .reveal-d4 { transition-delay: 0.4s; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      nav ul { display: none; }
-      .hero { grid-template-columns: 1fr; padding-top: 100px; }
-      .hero-visual { display: none; }
-      .problema-grid, .diff-grid { grid-template-columns: 1fr; }
-      .solucao-grid { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: 1fr 1fr; }
-      .steps::before { display: none; }
-      .resultados-grid { grid-template-columns: 1fr 1fr; }
-      .cta-row { grid-template-columns: 1fr; }
+      nav { mix-blend-mode: normal; background: rgba(10,9,8,0.92); backdrop-filter: blur(12px); }
+      .nav-links { display: none; }
+      .hero-sub-row { grid-template-columns: 1fr; }
+      .numeros-grid { grid-template-columns: 1fr 1fr; }
+      .statement-body { grid-template-columns: 1fr; }
+      .sol-cards { grid-template-columns: 1fr; }
+      .comp-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
     }
   </style>
 </head>
 <body>
 
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
 <!-- NAV -->
 <nav>
-  <div class="logo">Treebo</div>
-  <ul>
-    <li><a href="#problema">O Problema Real</a></li>
-    <li><a href="#solucao">A Estratégia</a></li>
-    <li><a href="#como">Como Atuamos</a></li>
-    <li><a href="#contato" class="nav-cta">Alinhamento Executivo</a></li>
+  <a href="#" class="logo">Treebo</a>
+  <ul class="nav-links">
+    <li><a href="#problema">O Problema</a></li>
+    <li><a href="#solucao">A Solução</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#contato" class="nav-cta">Falar com Especialista</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero" id="inicio">
-  <div class="hero-bg"></div>
+<!-- ── HERO ── -->
+<section class="panel hero" id="inicio">
   <div class="hero-noise"></div>
-  <div class="hero-content">
-    <div class="hero-badge">Ciência Emocional · Para Alta Performance Corporativa</div>
-    <h1>O <em>emocional</em><br/>ganha<br/>qualquer jogo.</h1>
+  <div class="hero-line-v"></div>
+
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-line"></div>
+    <span>Ciência Emocional · Alta Performance Corporativa</span>
+  </div>
+
+  <h1 class="hero-h1">
+    O emocional<br/>
+    <span class="italic">ganha</span><br/>
+    qualquer jogo.
+  </h1>
+
+  <div class="hero-sub-row">
     <p class="hero-sub">
-      Você pode ter a estratégia, o capital e as melhores mentes técnicas. Mas é o fator emocional que define quem entrega resultados sob pressão. Mapeamos a estrutura real da sua liderança — sem testes superficiais.
+      Você pode ter a estratégia, o capital e os melhores talentos técnicos do mercado. <strong>Mas é o fator emocional que decide quem entrega resultado sob pressão</strong> — e quem paralisa sua operação sem que você perceba a tempo.
     </p>
-    <div class="hero-ctas">
-      <a href="#contato" class="btn-primary">Proteger a Operação</a>
-      <a href="#solucao" class="btn-ghost">Conhecer o Método</a>
+    <div class="hero-cta-group">
+      <a href="#contato" class="btn-main">Eliminar o Risco Agora</a>
+      <a href="#solucao" class="btn-ghost">Ver a Metodologia →</a>
     </div>
   </div>
-  <div class="hero-visual">
-    <div class="orb-container">
-      <div class="orb"></div>
-      <div class="orb"></div>
-      <div class="orb"></div>
-      <div class="orb-core">
-        <div class="orb-icon">🎯</div>
-        <div class="orb-quote">"A pessoa certa,<br/>no lugar certo,<br/>emocionalmente."</div>
+</section>
+
+<!-- ── NÚMEROS ── -->
+<section class="numeros-panel">
+  <div class="numeros-grid reveal">
+    <div class="num-item">
+      <div class="num-val">R$<span>160k</span><span style="font-size:2rem;">+</span></div>
+      <div class="num-label">custo médio de uma contratação errada em posição de liderança — fora o tempo perdido e o estrago na equipe</div>
+    </div>
+    <div class="num-item">
+      <div class="num-val"><span>87</span>%</div>
+      <div class="num-label">de aumento na retenção de lideranças estratégicas após avaliação emocional Treebo</div>
+    </div>
+    <div class="num-item">
+      <div class="num-val"><span>3</span>×</div>
+      <div class="num-label">mais produtividade em equipes com compatibilidade emocional validada entre gestor e colaborador</div>
+    </div>
+    <div class="num-item">
+      <div class="num-val"><span>0</span>%</div>
+      <div class="num-label">de margem para que candidatos manipulem o resultado do protocolo Treebo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEMA ── -->
+<section class="panel statement" id="problema">
+  <div class="statement-inner">
+    <div class="section-tag reveal">
+      <div class="tag-line"></div>
+      <span>O Custo Oculto</span>
+    </div>
+    <h2 class="statement-h2 reveal reveal-d1">
+      A técnica coloca.<br/>
+      O emocional <em>derruba.</em>
+    </h2>
+    <div class="statement-body reveal reveal-d2">
+      <div>
+        <p class="statement-p">
+          Você já viveu esse roteiro. Contrata alguém com currículo impecável, referências sólidas, entrevistas brilhantes. Em seis meses o problema está instalado: <strong>a equipe perdeu ritmo, o gestor está sobrecarregado, as metas comprometidas.</strong>
+        </p>
+        <p class="statement-p" style="margin-top: 1.5rem;">
+          O problema nunca foi técnico. Foi emocional — e não havia nenhum instrumento no seu processo capaz de detectar isso antes da contratação. Você não pode controlar o mercado, a concorrência ou a economia. <strong>Mas pode controlar quem senta nas cadeiras críticas do seu negócio.</strong>
+        </p>
+      </div>
+      <div class="prob-cards-grid">
+        <div class="prob-card">
+          <div class="prob-tag">Erro 01</div>
+          <h4>Testes de perfil são ensaiáveis</h4>
+          <p>Qualquer executivo sênior sabe responder um DISC ou MBTI para parecer o candidato ideal. O resultado final agrada o RH — mas não reflete a realidade da operação.</p>
+        </div>
+        <div class="prob-card">
+          <div class="prob-tag">Erro 02</div>
+          <h4>Incompatibilidade gestor × equipe é sistêmica</h4>
+          <p>Um líder centralizador com uma equipe que precisa de autonomia gera paralisia sistêmica. Isso não é azar — é uma falha de diagnóstico que custa caro demais para ser ignorada.</p>
+        </div>
+        <div class="prob-card">
+          <div class="prob-tag">Erro 03</div>
+          <h4>Cada negócio exige um perfil emocional diferente</h4>
+          <p>Empresa em expansão acelerada precisa de líderes que performam no caos. Operação madura precisa de quem sustenta processos. Confundir esses perfis compromete diretamente o seu resultado.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROBLEMA -->
-<section class="problema" id="problema">
-  <div class="problema-grid reveal">
-    <div class="problema-text">
-      <div class="section-label">O Custo Oculto</div>
-      <h2 class="section-title">A técnica contrata.<br/>O emocional demite.</h2>
-      <p>A velha máxima corporativa nunca custou tão caro. O problema não é a demissão em si, mas o estrago silencioso que ocorre até ela acontecer.</p>
-      <p>Profissionais com currículos brilhantes travam operações, desmotivam equipes e reduzem margens de lucro por pura incompatibilidade. Colocar a pessoa errada na cadeira de liderança consome o seu tempo e sabota as suas metas.</p>
-    </div>
-    <div class="problema-cards">
-      <div class="prob-card">
-        <h4>Testes tradicionais são manipuláveis</h4>
-        <p>Seus executivos sabem exatamente como responder testes de perfil na internet para parecerem os candidatos ideais. O resultado final agrada o RH, mas não reflete a realidade da operação.</p>
-      </div>
-      <div class="prob-card">
-        <h4>Incompatibilidade Gestor × Equipe</h4>
-        <p>Colocar um líder centralizador com uma equipe que precisa de autonomia gera paralisia sistêmica. Isso não é azar, é previsível quando se mapeia perfis corretamente.</p>
-      </div>
-      <div class="prob-card">
-        <h4>Adequação à pressão e às mudanças</h4>
-        <p>Sua empresa exige um perfil que tolere o caos do crescimento ou a rotina de processos maduros? Confundir esses dois perfis na contratação é custoso para todos.</p>
-      </div>
-    </div>
+<!-- ── SOLUÇÃO ── -->
+<section class="panel solucao-panel" id="solucao">
+  <div class="section-tag reveal">
+    <div class="tag-line"></div>
+    <span>A Metodologia</span>
   </div>
-</section>
-
-<!-- SOLUÇÃO -->
-<section class="solucao" id="solucao">
-  <div class="solucao-header reveal">
-    <div class="section-label">A Solução</div>
-    <h2 class="section-title">Análise psicológica<br/>que não pode ser forjada.</h2>
-    <p>Aplicada exclusivamente por psicólogos credenciados, nossa metodologia garante que as cadeiras críticas do seu negócio sejam ocupadas por mentes preparadas para o seu nível de exigência.</p>
-  </div>
-  <div class="solucao-grid reveal">
+  <h2 class="statement-h2 reveal reveal-d1">
+    Análise psicológica<br/>
+    que não pode ser <em>forjada.</em>
+  </h2>
+  <div class="sol-cards reveal reveal-d2">
     <div class="sol-card">
-      <div class="sol-icon">🔍</div>
+      <div class="sol-num">01</div>
       <h3>Avaliação Profunda</h3>
-      <p>Análise comportamental e emocional rigorosa. Ignoramos as respostas ensaiadas e trazemos à mesa a estrutura real do profissional.</p>
+      <p>Protocolo de análise psicológica conduzido exclusivamente por psicólogos credenciados. Respostas ensaiadas não passam. O que emerge é a estrutura emocional real do profissional — não a versão preparada para entrevista.</p>
     </div>
     <div class="sol-card">
-      <div class="sol-icon">🔗</div>
+      <div class="sol-num">02</div>
       <h3>Engenharia de Acesso</h3>
-      <p>Mapeamos o perfil do gestor primeiro. Conectamos talentos que complementam a liderança existente, garantindo tração e alinhamento na execução.</p>
+      <p>Mapeamos o perfil emocional do gestor antes de avaliar qualquer candidato. O resultado não é apenas "bom ou ruim" — é compatível ou não com a liderança e a cultura que já existem no seu negócio.</p>
     </div>
     <div class="sol-card">
-      <div class="sol-icon">🎯</div>
+      <div class="sol-num">03</div>
       <h3>Aderência Real à Função</h3>
-      <p>Identificamos com precisão clínica quem possui a musculatura emocional necessária para a sua realidade: inovação sob pressão, criatividade ou estabilidade.</p>
+      <p>Identificamos com precisão clínica se o profissional tem predisposição emocional para o cargo: pressão alta, ambiguidade constante, liderança de times, gestão de crise ou ambiente estável.</p>
     </div>
   </div>
 </section>
 
-<!-- COMO FUNCIONA -->
-<section class="como" id="como">
-  <div class="como-header reveal">
-    <div class="section-label">O Processo</div>
-    <h2 class="section-title">Um processo claro, focado em previsibilidade.</h2>
-    <p>Cada etapa é desenhada para mitigar riscos nas suas tomadas de decisão e extrair o que testes superficiais não conseguem captar.</p>
-  </div>
-  <div class="steps reveal">
-    <div class="step">
-      <div class="step-num">1</div>
-      <h3>Diagnóstico do Ecossistema</h3>
-      <p>Entendemos a cultura da empresa, o desafio exato da função e o que se espera de quem vai ocupar a cadeira.</p>
+<!-- ── PROCESSO ── -->
+<section class="panel processo-panel" id="processo">
+  <div class="statement-inner">
+    <div class="section-tag reveal">
+      <div class="tag-line"></div>
+      <span>O Processo</span>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <h3>Mapeamento da Liderança</h3>
-      <p>Avaliamos o perfil emocional do gestor da área. Ele é o balizador de compatibilidade para a formação da equipe.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <h3>Auditoria Psicológica</h3>
-      <p>O colaborador é submetido a um protocolo profundo de análise conduzido estritamente por psicólogos Treebo.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <h3>Dossiê Executivo</h3>
-      <p>Entrega de laudo focado em negócios: aderência real ao cargo, compatibilidade com o líder e pontos de atenção práticos.</p>
-    </div>
-  </div>
-</section>
-
-<!-- DIFERENCIAIS -->
-<section class="diff">
-  <div class="diff-grid reveal">
-    <div class="diff-visual">
-      <div class="compare-row">
-        <div class="compare-header">Testes convencionais</div>
-        <div></div>
-        <div class="compare-header">Treebo</div>
+    <h2 class="statement-h2 reveal reveal-d1">
+      Previsibilidade<br/>de ponta a ponta.
+    </h2>
+    <div class="steps-list reveal reveal-d2">
+      <div class="step-row">
+        <div class="step-n">01</div>
+        <div class="step-content">
+          <h3>Diagnóstico do Ecossistema</h3>
+          <p>Entendemos a fundo a cultura da empresa, o nível de exigência do cargo e o que significa sucesso nessa posição dentro do seu contexto específico de negócio. Sem atalhos, sem templates genéricos.</p>
+        </div>
       </div>
-      <div class="compare-row">
-        <div class="compare-bad">Pode ser manipulado</div>
-        <div class="compare-vs">vs</div>
-        <div class="compare-good">Imune à manipulação</div>
+      <div class="step-row">
+        <div class="step-n">02</div>
+        <div class="step-content">
+          <h3>Mapeamento da Liderança</h3>
+          <p>Avaliamos o perfil emocional do gestor responsável pela área. Ele é o ponto de referência para toda a análise de compatibilidade que vem a seguir — e o fator mais ignorado nos processos convencionais.</p>
+        </div>
       </div>
-      <div class="compare-row">
-        <div class="compare-bad">Superficial e generalista</div>
-        <div class="compare-vs">vs</div>
-        <div class="compare-good">Análise psicológica profunda</div>
+      <div class="step-row">
+        <div class="step-n">03</div>
+        <div class="step-content">
+          <h3>Auditoria Psicológica Profunda</h3>
+          <p>O candidato ou colaborador é submetido ao protocolo Treebo, conduzido estritamente por psicólogos habilitados. Sem plataformas automatizadas. Sem consultores sem formação. Sem resultado que possa ser forjado.</p>
+        </div>
       </div>
-      <div class="compare-row">
-        <div class="compare-bad">Qualquer um aplica</div>
-        <div class="compare-vs">vs</div>
-        <div class="compare-good">Exclusivo para psicólogos</div>
+      <div class="step-row">
+        <div class="step-n">04</div>
+        <div class="step-content">
+          <h3>Dossiê Executivo</h3>
+          <p>Entrega de laudo orientado a negócio: aderência real ao cargo, compatibilidade com o gestor, pontos de atenção e recomendações práticas para a sua tomada de decisão. Não gráficos decorativos — substância real.</p>
+        </div>
       </div>
-      <div class="compare-row">
-        <div class="compare-bad">Ignora o ecossistema interno</div>
-        <div class="compare-vs">vs</div>
-        <div class="compare-good">Validação Gestor × Equipe</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-bad">Cargo genérico</div>
-        <div class="compare-vs">vs</div>
-        <div class="compare-good">Adequação exata à função</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-bad">Gráficos coloridos vagos</div>
-        <div class="compare-vs">vs</div>
-        <div class="compare-good">Laudo detalhado e acionável</div>
-      </div>
-    </div>
-    <div class="diff-text">
-      <div class="section-label">A Vantagem Competitiva</div>
-      <h2 class="section-title">Não é feeling.<br/>É ciência aplicada ao negócio.</h2>
-      <p>A Treebo une a técnica psicológica à pragmática do mundo corporativo. Entregamos a certeza de que as pessoas ao seu lado têm o lastro emocional para escalar o seu negócio de forma segura.</p>
-      <ul class="diff-list">
-        <li>Protocolo aplicado apenas por psicólogos habilitados</li>
-        <li>Identifica predisposição emocional real ao cargo e à pressão</li>
-        <li>Avalia compatibilidade exata entre gestor e colaborador</li>
-        <li>Resultado imune a dissimulações do entrevistado</li>
-        <li>Garante maior retenção e protege o seu tempo</li>
-      </ul>
     </div>
   </div>
 </section>
 
-<!-- RESULTADOS -->
-<section class="resultados">
-  <div class="resultados-grid reveal">
-    <div class="res-item">
-      <div class="res-num">87%</div>
-      <div class="res-label">de aumento na retenção estratégica pós-alinhamento emocional</div>
+<!-- ── COMPARATIVO ── -->
+<section class="panel comp-panel">
+  <div class="section-tag reveal">
+    <div class="tag-line"></div>
+    <span>Por que Treebo</span>
+  </div>
+  <h2 class="statement-h2 reveal reveal-d1">
+    Não é feeling.<br/>
+    É <em>ciência aplicada</em><br/>ao negócio.
+  </h2>
+  <div class="comp-grid reveal reveal-d2">
+    <div class="comp-table">
+      <div class="comp-header">
+        <span>Testes Convencionais</span>
+        <span></span>
+        <span>Treebo</span>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Facilmente manipulável</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Imune à dissimulação</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Superficial e genérico</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Análise psicológica profunda</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Qualquer um aplica</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Exclusivo para psicólogos</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Ignora o ecossistema interno</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Valida Gestor × Colaborador</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Cargo genérico</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Aderência exata à função</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Gráficos coloridos vagos</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Dossiê executivo acionável</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Decisão baseada em feeling</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Decisão baseada em ciência</div>
+      </div>
     </div>
-    <div class="res-item">
-      <div class="res-num">3×</div>
-      <div class="res-label">mais produtividade em equipes emocionalmente compatíveis</div>
-    </div>
-    <div class="res-item">
-      <div class="res-num">0%</div>
-      <div class="res-label">de margem para que os avaliados manipulem o resultado final</div>
-    </div>
-    <div class="res-item">
-      <div class="res-num">100%</div>
-      <div class="res-label">das imersões executadas estritamente por psicólogos credenciados</div>
+    <div class="diff-list">
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Resultado imune à manipulação</strong> — candidatos não têm como forjar o protocolo, independente de quanto se preparem para a entrevista.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Aplicado exclusivamente por psicólogos habilitados</strong> — não por plataformas automatizadas nem por consultores sem formação clínica.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Compatibilidade real gestor × equipe</strong> — o eixo mais ignorado e mais caro das contratações corporativas. Treebo o torna mensurável.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Laudo acionável, não gráficos decorativos</strong> — você recebe o que precisa para decidir. Nada a mais, nada a menos.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Protege o seu tempo</strong> — cada cadeira crítica avaliada pela Treebo é uma variável eliminada do risco operacional do seu negócio.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SLOGAN -->
-<section class="slogan-section">
-  <div class="slogan-bg"></div>
-  <div class="section-label">A Verdade dos Negócios</div>
-  <p class="slogan-text reveal">
-    "<em>O emocional<br/>ganha qualquer jogo.</em>"
-  </p>
+<!-- ── QUOTE ── -->
+<section class="quote-panel">
+  <div class="quote-inner reveal">
+    <div class="quote-tag">O Nosso Propósito</div>
+    <p class="quote-text">
+      "O emocional<br/>
+      <em>ganha qualquer jogo.</em>"
+    </p>
+  </div>
 </section>
 
-<!-- CONTATO / CTA -->
-<section class="cta" id="contato">
-  <div class="cta-inner reveal">
-    <div class="section-label">Alinhamento Executivo</div>
-    <h2 class="section-title">Sua empresa é grande demais<br/>para depender de achismos.</h2>
-    <p>Fale diretamente com a Treebo. Entendemos a complexidade da sua operação e o que é necessário para colocar a pessoa certa, na cadeira certa.</p>
-    <div class="cta-form">
-      <div class="cta-row">
+<!-- ── CTA ── -->
+<section class="panel cta-panel" id="contato">
+  <div class="cta-inner">
+    <div class="section-tag reveal">
+      <div class="tag-line"></div>
+      <span>Falar com Especialista</span>
+    </div>
+    <h2 class="cta-h2 reveal reveal-d1">
+      Sua empresa é grande demais<br/>
+      para depender de <em>achismos.</em>
+    </h2>
+    <p class="cta-sub reveal reveal-d2">
+      Cada cadeira crítica preenchida com a análise Treebo é uma variável eliminada do risco operacional. <strong>Fale com a nossa equipe — entendemos a complexidade da sua operação.</strong>
+    </p>
+    <div class="form-wrap reveal reveal-d3">
+      <div class="form-row">
         <div class="field">
           <label>Seu Nome</label>
-          <input type="text" placeholder="Nome completo" />
+          <input type="text" placeholder="Nome completo"/>
         </div>
         <div class="field">
           <label>Empresa</label>
-          <input type="text" placeholder="Nome da empresa" />
+          <input type="text" placeholder="Nome da empresa"/>
         </div>
       </div>
-      <div class="field">
-        <label>E-mail Corporativo</label>
-        <input type="email" placeholder="seu@empresa.com.br" />
+      <div class="form-row">
+        <div class="field">
+          <label>E-mail Corporativo</label>
+          <input type="email" placeholder="seu@empresa.com.br"/>
+        </div>
+        <div class="field">
+          <label>Cargo</label>
+          <input type="text" placeholder="Seu cargo"/>
+        </div>
       </div>
       <div class="field">
         <label>Necessidade Principal</label>
         <select>
-          <option value="">Selecione...</option>
-          <option>Avaliação profunda de candidato para vaga crítica</option>
-          <option>Mapeamento e auditoria da equipe atual</option>
-          <option>Resolução de atritos (Compatibilidade Gestor × Colaborador)</option>
+          <option value="">Selecione o seu cenário...</option>
+          <option>Avaliação profunda de candidato para posição crítica</option>
+          <option>Auditoria emocional da liderança atual</option>
+          <option>Resolução de atrito sistêmico (Gestor × Equipe)</option>
           <option>Reestruturação organizacional</option>
           <option>Outro cenário</option>
         </select>
       </div>
       <div class="field">
-        <label>Mensagem (Opcional)</label>
-        <textarea placeholder="Conte um pouco sobre o momento do negócio e o seu gargalo atual..."></textarea>
+        <label>Contexto do Negócio (Opcional)</label>
+        <textarea placeholder="Descreva brevemente o momento do seu negócio e o principal gargalo que deseja resolver..."></textarea>
       </div>
-      <button class="btn-primary" onclick="alert('Solicitação recebida. Em breve faremos um contato executivo com você.')">Solicitar Contato →</button>
+      <button class="btn-main" style="margin-top:0.5rem; border:none; cursor:none;"
+        onclick="alert('Solicitação recebida. Nossa equipe fará contato em até 24 horas.')">
+        Solicitar Contato Executivo →
+      </button>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ── FOOTER ── -->
 <footer>
   <div>
     <div class="footer-logo">Treebo</div>
-    <div class="footer-slogan">O emocional ganha qualquer jogo.</div>
+    <div class="footer-tagline">"O emocional ganha qualquer jogo."</div>
   </div>
-  <p>© 2026 Treebo. Todos os direitos reservados. Foco no seu resultado.</p>
+  <p>© 2026 Treebo. Todos os direitos reservados.</p>
 </footer>
 
 <script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  reveals.forEach(el => observer.observe(el));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
 </script>
-
 </body>
 </html>

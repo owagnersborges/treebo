@@ -3,237 +3,437 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TReebo | Soluções Estratégicas</title>
+    <title>TReebo | Excelência e Estratégia Corporativa</title>
+    <!-- Fontes do Google para um visual premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
     <style>
-        /* Estilos Globais */
+        /* Paleta de Cores e Variáveis */
         :root {
-            --primary-color: #0F172A; /* Azul corporativo escuro */
-            --accent-color: #2563EB;  /* Azul de destaque para CTAs */
-            --text-light: #F8FAFC;
-            --text-dark: #334155;
-            --bg-gray: #F1F5F9;
+            --azul-escuro: #0a1128; /* Fundo principal e textos fortes */
+            --azul-medio: #1c2d5a;
+            --dourado-suave: #cba871; /* Cor de destaque/ação */
+            --branco-gelo: #f8f9fa;
+            --cinza-texto: #4b5563;
+        }
+
+        /* Estilos Globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: var(--text-dark);
-            line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--cinza-texto);
+            line-height: 1.8;
+            background-color: var(--branco-gelo);
         }
 
         h1, h2, h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+            font-family: 'Lora', serif; /* Fonte com serifa para títulos traz elegância e autoridade */
+            color: var(--azul-escuro);
+            font-weight: 600;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1140px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
+        /* Botões */
         .btn {
             display: inline-block;
-            background-color: var(--accent-color);
-            color: white;
-            padding: 1rem 2rem;
+            padding: 1rem 2.5rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             text-decoration: none;
-            font-weight: bold;
-            border-radius: 4px;
-            transition: background 0.3s;
+            border-radius: 2px;
+            transition: all 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #1D4ED8;
+        .btn-primary {
+            background-color: var(--dourado-suave);
+            color: #fff;
+            border: 1px solid var(--dourado-suave);
         }
 
-        /* Hero Section */
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--dourado-suave);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+        }
+
+        .btn-outline:hover {
+            background-color: #fff;
+            color: var(--azul-escuro);
+        }
+
+        /* Header / Navegação */
+        header {
+            background-color: var(--azul-escuro);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--dourado-suave);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--dourado-suave);
+        }
+
+        /* Hero Section - A Primeira Impressão */
         .hero {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            padding: 6rem 0;
+            background: linear-gradient(rgba(10, 17, 40, 0.8), rgba(10, 17, 40, 0.9)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
+            color: #fff;
+            padding: 8rem 0;
             text-align: center;
         }
 
         .hero h1 {
-            color: var(--text-light);
-            font-size: 3rem;
+            color: #fff;
+            font-size: 3.5rem;
             margin-bottom: 1.5rem;
-            max-width: 800px;
+            line-height: 1.2;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2.5rem;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            font-family: 'Lora', serif;
+            font-style: italic;
             opacity: 0.9;
         }
 
-        /* Seção de Soluções */
-        .solutions {
-            padding: 5rem 0;
-            background-color: var(--bg-gray);
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
         }
 
-        .section-header {
+        /* A Nossa Promessa */
+        .promise {
+            padding: 6rem 0;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .promise h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .promise h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--dourado-suave);
+        }
+
+        .promise-text {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* O Que Fazemos (Serviços/Soluções) */
+        .services {
+            padding: 6rem 0;
+            background-color: var(--branco-gelo);
+        }
+
+        .services-header {
             text-align: center;
             margin-bottom: 4rem;
         }
 
-        .grid-3 {
+        .services-header h2 {
+            font-size: 2.5rem;
+        }
+
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
         }
 
-        .card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--accent-color);
+        .service-card {
+            background: #fff;
+            padding: 3rem 2rem;
+            border-top: 4px solid var(--azul-medio);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Metodologia */
-        .methodology {
-            padding: 5rem 0;
-            background: white;
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            border-top-color: var(--dourado-suave);
         }
 
-        .step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 2rem;
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--azul-escuro);
         }
 
-        .step-number {
-            background: var(--primary-color);
-            color: white;
-            width: 40px;
-            height: 40px;
+        .service-card p {
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-link {
+            color: var(--dourado-suave);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        /* Quem Somos */
+        .about {
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: bold;
-            margin-right: 1.5rem;
-            flex-shrink: 0;
+            background-color: var(--azul-escuro);
+            color: #fff;
         }
 
-        /* Casos de Sucesso */
-        .social-proof {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 5rem 0;
-            text-align: center;
+        .about-image {
+            flex: 1;
+            min-height: 500px;
+            background: url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80') center/cover;
         }
 
-        .social-proof h2 {
-            color: white;
+        .about-content {
+            flex: 1;
+            padding: 6rem 4rem;
         }
 
-        .testimonial {
-            font-size: 1.5rem;
-            font-style: italic;
-            max-width: 800px;
-            margin: 0 auto 2rem auto;
-            opacity: 0.9;
+        .about-content h2 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            opacity: 0.85;
+            font-size: 1.05rem;
         }
 
         /* Footer */
         footer {
-            background: #020617;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
+            background-color: #050a17;
+            color: #fff;
+            padding: 4rem 0 2rem 0;
             font-size: 0.9rem;
-            opacity: 0.8;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            color: var(--dourado-suave);
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col ul a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #6b7280;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. Hero Section -->
+    <!-- Cabeçalho Institucional -->
+    <header>
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">TRee<span>bo</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#promessa">A Abordagem</a></li>
+                    <li><a href="#solucoes">Nossas Soluções</a></li>
+                    <li><a href="#quem-somos">Quem Somos</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section (Impacto) -->
     <section class="hero">
         <div class="container">
-            <h1>Transformando [Problema do Cliente] em Resultados Previsíveis</h1>
-            <p>Apoiamos diretores e executivos a estruturar, escalar e otimizar as operações através de abordagens testadas no mercado.</p>
-            <a href="#contato" class="btn">Agende uma Conversa Estratégica</a>
+            <h1>Desenvolvendo Organizações e Lideranças para o Futuro</h1>
+            <p>"Elevamos o potencial da sua empresa alinhando visão estratégica e execução impecável."</p>
+            <div class="hero-buttons">
+                <a href="#solucoes" class="btn btn-primary">Descubra Nossas Soluções</a>
+                <a href="#contato" class="btn btn-outline">Fale com a Diretoria</a>
+            </div>
         </div>
     </section>
 
-    <!-- 2. Soluções Orientadas a Desafios -->
-    <section class="solutions">
+    <!-- A Promessa / Filosofia -->
+    <section id="promessa" class="promise">
         <div class="container">
-            <div class="section-header">
-                <h2>Áreas de Impacto</h2>
-                <p>Nossas soluções são desenhadas para resolver os gargalos mais críticos do seu negócio.</p>
-            </div>
-            <div class="grid-3">
-                <div class="card">
-                    <h3>Eficiência Operacional</h3>
-                    <p>Redução de custos e otimização de processos para garantir que sua equipe produza mais com os recursos atuais. Ideal para empresas em fase de escala.</p>
-                </div>
-                <div class="card">
-                    <h3>Desenvolvimento de Lideranças</h3>
-                    <p>Capacitação do corpo gerencial para tomar decisões estratégicas e autônomas, liberando o C-level para focar no crescimento macro.</p>
-                </div>
-                <div class="card">
-                    <h3>Crescimento Sustentável</h3>
-                    <p>Implementação de métricas e frameworks de gestão que garantem previsibilidade de caixa e expansão segura do modelo de negócios.</p>
-                </div>
+            <h2>Nossa Filosofia de Negócios</h2>
+            <div class="promise-text">
+                <p>Acreditamos que o verdadeiro crescimento de uma organização não ocorre apenas através de ferramentas e planilhas, mas sim através de uma fundação sólida onde processos encontram propósito. Na TReebo, nossa missão é atuar lado a lado com conselhos e diretorias para destravar a performance do seu negócio, mitigando riscos e construindo um legado de excelência sustentável.</p>
             </div>
         </div>
     </section>
 
-    <!-- 3. A Metodologia TReebo -->
-    <section class="methodology">
+    <!-- O Que Fazemos (Soluções de Alto Nível) -->
+    <section id="solucoes" class="services">
         <div class="container">
-            <div class="section-header">
-                <h2>Como Conduzimos a Transformação</h2>
-                <p>Um processo consultivo e pragmático focado em retorno sobre o investimento.</p>
+            <div class="services-header">
+                <h2>O Que Fazemos</h2>
+                <p>Nossas frentes de atuação são desenhadas sob medida para os desafios complexos do cenário corporativo atual.</p>
             </div>
-            <div style="max-width: 800px; margin: 0 auto;">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div>
-                        <h3>Diagnóstico Executivo</h3>
-                        <p>Mapeamos os gargalos silenciosos da operação através de uma imersão nos dados e processos da sua empresa.</p>
-                    </div>
+            <div class="grid">
+                <!-- Solução 1 -->
+                <div class="service-card">
+                    <h3>Consultoria Estratégica</h3>
+                    <p>Apoiamos a alta gestão no redesenho de modelos de negócios e planejamento de longo prazo, garantindo que a direção da empresa esteja blindada contra volatilidades de mercado e focada na geração de valor real.</p>
+                    <a href="#" class="service-link">Saiba Mais &rarr;</a>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div>
-                        <h3>Plano de Ação Tático</h3>
-                        <p>Desenvolvemos uma rota clara de implementação, priorizando ações que geram caixa ou reduzem custos no curto prazo.</p>
-                    </div>
+                <!-- Solução 2 -->
+                <div class="service-card">
+                    <h3>Desenvolvimento Organizacional</h3>
+                    <p>Trabalhamos na reestruturação de processos e na cultura da empresa. Nosso objetivo é criar um ambiente de alta eficiência, onde a liderança intermédia tem autonomia e os gargalos operacionais são eliminados.</p>
+                    <a href="#" class="service-link">Saiba Mais &rarr;</a>
                 </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div>
-                        <h3>Acompanhamento de Métricas</h3>
-                        <p>Monitoramos a execução junto à sua equipe, ajustando a rota com base em KPIs reais até atingirmos o objetivo acordado.</p>
-                    </div>
+                <!-- Solução 3 -->
+                <div class="service-card">
+                    <h3>Excelência Executiva</h3>
+                    <p>Programas imersivos para potencializar a capacidade de decisão e influência do C-Level. Uma jornada para líderes que precisam escalar suas equipes mantendo a coesão e o ritmo de crescimento.</p>
+                    <a href="#" class="service-link">Saiba Mais &rarr;</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. Prova Social e Autoridade -->
-    <section class="social-proof">
-        <div class="container">
-            <h2>Resultados Comprovados</h2>
-            <p class="testimonial">"A TReebo mudou a forma como nossa diretoria enxerga a operação. Reduzimos nossos gargalos em 40% no primeiro semestre e ganhamos clareza para escalar o negócio de forma segura."</p>
-            <p><strong>— [Nome do Cliente], Diretor(a) da [Nome da Empresa]</strong></p>
+    <!-- Quem Somos -->
+    <section id="quem-somos" class="about">
+        <div class="about-image"></div>
+        <div class="about-content">
+            <h2>Quem Somos</h2>
+            <p>A TReebo nasceu da convicção de que empresas de sucesso são organismos vivos que precisam de fundamentos sólidos e direcionamento claro para prosperar.</p>
+            <p>Não somos apenas prestadores de serviço; somos parceiros estratégicos. Nossa equipe traz uma bagagem profunda do mundo corporativo, traduzindo teorias complexas em ações práticas e mensuráveis. Trabalhamos em silêncio para que os resultados da sua empresa façam barulho.</p>
+            <br>
+            <a href="#contato" class="btn btn-primary">Conheça Nossa Equipe</a>
         </div>
     </section>
 
-    <!-- Footer Simples -->
+    <!-- Footer Corporativo -->
     <footer>
         <div class="container">
-            <p>&copy; 2026 TReebo. Todos os direitos reservados. Foco no seu resultado.</p>
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>TReebo</h4>
+                    <p style="color: #9ca3af; margin-top: 1rem;">Excelência e Estratégia Corporativa.<br>Transformando desafios complexos em vantagens competitivas.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Nossas Soluções</h4>
+                    <ul>
+                        <li><a href="#">Consultoria Estratégica</a></li>
+                        <li><a href="#">Desenvolvimento Organizacional</a></li>
+                        <li><a href="#">Excelência Executiva</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="#">contato@treebo.com.br</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">(00) 0000-0000</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TReebo. Todos os direitos reservados.</p>
+            </div>
         </div>
     </footer>
 

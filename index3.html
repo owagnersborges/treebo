@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Treebo — O Emocional Ganha Qualquer Jogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --preto: #0a0908;
+      --branco: #f5f0e8;
+      --ouro: #b8842a;
+      --ouro-claro: #d4a84b;
+      --cinza: #6b6560;
+      --borda: rgba(184,132,42,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--preto);
+      color: var(--branco);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CURSOR CUSTOMIZADO */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--ouro);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(184,132,42,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: all 0.12s ease;
+    }
+    body:hover .cursor { opacity: 1; }
+    a:hover ~ .cursor, button:hover ~ .cursor { width: 16px; height: 16px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.8rem 5vw;
+      mix-blend-mode: difference;
+    }
+    .logo {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.1rem; font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--branco);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex; gap: 3rem; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(245,240,232,0.82);
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--branco); }
+    .nav-cta {
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ouro-claro) !important;
+      border-bottom: 1px solid var(--ouro);
+      padding-bottom: 2px;
+    }
+
+    /* SEÇÃO BASE */
+    .panel {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 12vh 5vw;
+      position: relative;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--preto);
+      overflow: hidden;
+    }
+    .hero-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.025; pointer-events: none;
+    }
+    .hero-line-v {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(184,132,42,0.35) 30%, rgba(184,132,42,0.2) 70%, transparent);
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 1.2rem;
+      margin-bottom: 4rem;
+      opacity: 0; animation: fadeIn 1s 0.3s forwards;
+    }
+    .hero-eyebrow-line { width: 48px; height: 1px; background: var(--ouro); }
+    .hero-eyebrow span {
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ouro);
+    }
+    .hero-h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(4rem, 9vw, 9rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      max-width: 900px;
+      opacity: 0; animation: slideUp 1s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .hero-h1 .italic { font-style: italic; color: var(--ouro-claro); }
+    .hero-sub-row {
+      margin-top: 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      max-width: 900px;
+      opacity: 0; animation: fadeIn 1s 1s forwards;
+    }
+    .hero-sub {
+      font-size: 1.1rem; line-height: 1.85;
+      color: rgba(245,240,232,0.82);
+      font-weight: 400;
+    }
+    .hero-sub strong { color: var(--branco); font-weight: 500; }
+    .hero-cta-group { display: flex; flex-direction: column; justify-content: flex-end; gap: 1.5rem; }
+    .btn-main {
+      display: inline-block;
+      background: var(--ouro);
+      color: var(--preto);
+      padding: 1.1rem 2.5rem;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none;
+      border: none; cursor: none;
+      transition: background 0.2s, transform 0.15s;
+      align-self: flex-start;
+    }
+    .btn-main:hover { background: var(--ouro-claro); transform: translateY(-2px); }
+    .btn-ghost {
+      display: inline-block;
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(245,240,232,0.75);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,240,232,0.4);
+      padding-bottom: 2px;
+      align-self: flex-start;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--branco); border-color: var(--branco); }
+
+    /* ── NÚMEROS ── */
+    .numeros-panel {
+      background: var(--branco);
+      color: var(--preto);
+      padding: 8vh 5vw;
+      min-height: auto;
+    }
+    .numeros-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      border-left: 1px solid rgba(10,9,8,0.12);
+    }
+    .num-item {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid rgba(10,9,8,0.12);
+      border-top: 1px solid rgba(10,9,8,0.12);
+      border-bottom: 1px solid rgba(10,9,8,0.12);
+    }
+    .num-val {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 3.8rem; font-weight: 700;
+      color: var(--preto);
+      line-height: 1; margin-bottom: 1rem;
+    }
+    .num-val span { color: var(--ouro); }
+    .num-label {
+      font-size: 0.95rem; line-height: 1.65;
+      color: rgba(10,9,8,0.72); font-weight: 400;
+    }
+
+    /* ── STATEMENT (scroll reveal sections) ── */
+    .statement {
+      background: var(--preto);
+      border-top: 1px solid var(--borda);
+    }
+    .statement-inner {
+      max-width: 1100px;
+    }
+    .section-tag {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .section-tag .tag-line { width: 32px; height: 1px; background: var(--ouro); }
+    .section-tag span {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ouro);
+    }
+    .statement-h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2.5rem, 5vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+    }
+    .statement-h2 em { font-style: italic; color: var(--ouro-claro); }
+    .statement-body {
+      margin-top: 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .statement-p {
+      font-size: 1.05rem; line-height: 1.85;
+      color: rgba(245,240,232,0.82);
+      font-weight: 400;
+    }
+    .statement-p strong { color: var(--branco); font-weight: 500; }
+
+    /* ── PROB CARDS ── */
+    .prob-cards-grid {
+      display: flex; flex-direction: column;
+      border: 1px solid var(--borda);
+    }
+    .prob-card {
+      padding: 1.8rem 2rem;
+      border-bottom: 1px solid var(--borda);
+      transition: background 0.25s;
+    }
+    .prob-card:last-child { border: none; }
+    .prob-card:hover { background: rgba(184,132,42,0.05); }
+    .prob-tag {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ouro); margin-bottom: 0.6rem;
+    }
+    .prob-card h4 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 0.5rem; color: var(--branco);
+      line-height: 1.35;
+    }
+    .prob-card p {
+      font-size: 0.95rem; color: rgba(245,240,232,0.78);
+      line-height: 1.75; font-weight: 400;
+    }
+
+    /* ── SOLUÇÃO FULL ── */
+    .solucao-panel {
+      background: var(--branco);
+      color: var(--preto);
+    }
+    .solucao-panel .section-tag .tag-line { background: var(--ouro); }
+    .solucao-panel .section-tag span { color: var(--ouro); }
+    .solucao-panel .statement-h2 { color: var(--preto); }
+    .solucao-panel .statement-h2 em { color: var(--ouro); }
+    .sol-cards {
+      margin-top: 5rem;
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      border-left: 1px solid rgba(10,9,8,0.1);
+    }
+    .sol-card {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid rgba(10,9,8,0.1);
+      border-top: 1px solid rgba(10,9,8,0.1);
+      border-bottom: 1px solid rgba(10,9,8,0.1);
+    }
+    .sol-num {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 4rem; font-weight: 700;
+      color: rgba(10,9,8,0.08);
+      line-height: 1; margin-bottom: 1.5rem;
+    }
+    .sol-card h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 0.8rem; color: var(--preto);
+      line-height: 1.3;
+    }
+    .sol-card p {
+      font-size: 1rem; line-height: 1.8;
+      color: rgba(10,9,8,0.72); font-weight: 400;
+    }
+
+    /* ── PROCESSO ── */
+    .processo-panel { background: var(--preto); border-top: 1px solid var(--borda); }
+    .steps-list {
+      margin-top: 4rem;
+      display: flex; flex-direction: column;
+    }
+    .step-row {
+      display: grid;
+      grid-template-columns: 5rem 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--borda);
+      align-items: start;
+    }
+    .step-row:first-child { border-top: 1px solid var(--borda); }
+    .step-n {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 2.5rem; font-weight: 700;
+      color: rgba(184,132,42,0.25);
+      line-height: 1;
+      transition: color 0.3s;
+    }
+    .step-row:hover .step-n { color: var(--ouro); }
+    .step-content h3 {
+      font-size: 1.15rem; font-weight: 600;
+      margin-bottom: 0.6rem; color: var(--branco);
+    }
+    .step-content p {
+      font-size: 1rem; line-height: 1.8;
+      color: rgba(245,240,232,0.78); font-weight: 400;
+    }
+
+    /* ── COMPARATIVO ── */
+    .comp-panel {
+      background: var(--preto);
+      border-top: 1px solid var(--borda);
+    }
+    .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; margin-top: 5rem; }
+    .comp-table { border: 1px solid var(--borda); }
+    .comp-header {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      padding: 1.2rem 2rem;
+      background: rgba(184,132,42,0.10);
+      border-bottom: 1px solid rgba(184,132,42,0.3);
+    }
+    .comp-header span {
+      font-size: 0.78rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(245,240,232,0.6);
+      font-weight: 600;
+    }
+    .comp-header span:last-child { text-align: right; color: var(--ouro-claro); }
+    .comp-row {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; gap: 1.5rem;
+      padding: 1.1rem 2rem;
+      border-bottom: 1px solid rgba(184,132,42,0.1);
+    }
+    .comp-row:last-child { border: none; }
+    .c-bad {
+      font-size: 0.95rem;
+      color: rgba(245,240,232,0.55);
+      text-decoration: line-through;
+      text-decoration-color: rgba(184,132,42,0.6);
+      text-decoration-thickness: 1.5px;
+    }
+    .c-vs {
+      font-size: 0.7rem; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ouro);
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid rgba(184,132,42,0.35);
+    }
+    .c-good { font-size: 1rem; color: var(--branco); font-weight: 600; text-align: right; }
+
+    .diff-list { display: flex; flex-direction: column; gap: 1.2rem; }
+    .diff-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.3rem 1.5rem;
+      border: 1px solid var(--borda);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .diff-item:hover { background: rgba(184,132,42,0.05); border-color: rgba(184,132,42,0.35); }
+    .diff-bullet { color: var(--ouro-claro); flex-shrink: 0; margin-top: 0.2rem; font-size: 0.8rem; }
+    .diff-item p { font-size: 1rem; line-height: 1.7; color: rgba(245,240,232,0.85); font-weight: 400; }
+    .diff-item p strong { color: var(--branco); font-weight: 600; }
+
+    /* ── NEURO IMAGE SECTION ── */
+    .neuro-section {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      overflow: hidden;
+    }
+
+    /* Imagem de fundo com parallax via JS */
+    .neuro-bg {
+      position: absolute; inset: -15%;
+      background-image: url('https://raw.githubusercontent.com/owagnersborges/treebo/main/treebo-neurowork.png');
+      background-size: cover;
+      background-position: center 30%;
+      will-change: transform;
+      transition: transform 0.05s linear;
+    }
+
+    /* Camadas de overlay sofisticadas */
+    .neuro-overlay-1 {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(10,9,8,0.88) 0%,
+        rgba(10,9,8,0.65) 40%,
+        rgba(10,9,8,0.50) 60%,
+        rgba(10,9,8,0.82) 100%
+      );
+    }
+    .neuro-overlay-2 {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,9,8,0.7) 0%,
+        transparent 25%,
+        transparent 75%,
+        rgba(10,9,8,0.7) 100%
+      );
+    }
+    .neuro-overlay-gold {
+      position: absolute; inset: 0;
+      background: radial-gradient(
+        ellipse 70% 60% at 60% 50%,
+        rgba(184,132,42,0.12) 0%,
+        transparent 70%
+      );
+    }
+
+    /* Canvas de partículas neurais */
+    #neuro-canvas {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    /* Linha de borda decorativa lateral */
+    .neuro-border-left {
+      position: absolute;
+      left: 5vw; top: 10%; bottom: 10%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(184,132,42,0.6) 30%, rgba(184,132,42,0.3) 70%, transparent);
+    }
+
+    /* Conteúdo */
+    .neuro-content {
+      position: relative; z-index: 10;
+      padding: 12vh 5vw;
+      max-width: 820px;
+    }
+    .neuro-tag {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 3rem;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .neuro-tag.lit { opacity: 1; transform: translateY(0); }
+    .neuro-tag-line { width: 40px; height: 1px; background: var(--ouro); }
+    .neuro-tag span {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--ouro);
+    }
+
+    .neuro-quote {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--branco);
+      overflow: hidden;
+    }
+    .neuro-quote-line {
+      display: block;
+      opacity: 0; transform: translateY(60px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+    .neuro-quote-line.lit { opacity: 1; transform: translateY(0); }
+    .neuro-quote-line:nth-child(2) { transition-delay: 0.18s; }
+    .neuro-quote-line em {
+      font-style: italic;
+      color: var(--ouro-claro);
+    }
+
+    .neuro-sub {
+      margin-top: 2.5rem;
+      font-size: 1.05rem; line-height: 1.85;
+      color: rgba(245,240,232,0.78);
+      font-weight: 400;
+      max-width: 520px;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s 0.4s ease, transform 0.8s 0.4s ease;
+    }
+    .neuro-sub.lit { opacity: 1; transform: translateY(0); }
+    .neuro-sub strong { color: var(--branco); font-weight: 600; }
+
+    /* Indicador de scroll animado */
+    .neuro-scroll-hint {
+      position: absolute;
+      bottom: 3rem; left: 5vw;
+      display: flex; align-items: center; gap: 1rem;
+      z-index: 10;
+      opacity: 0; animation: fadeIn 1s 2s forwards;
+    }
+    .scroll-line {
+      width: 40px; height: 1px;
+      background: rgba(184,132,42,0.5);
+      position: relative; overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--ouro);
+      animation: scrollSlide 2s 2.5s ease-in-out infinite;
+    }
+    @keyframes scrollSlide {
+      0% { left: -100%; }
+      50% { left: 100%; }
+      100% { left: 100%; }
+    }
+    .scroll-hint-text {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+    }
+
+    /* Painel de dados flutuante */
+    .neuro-data-panel {
+      position: absolute;
+      right: 5vw; top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      display: flex; flex-direction: column; gap: 1px;
+      opacity: 0; transition: opacity 1s 0.6s ease;
+    }
+    .neuro-data-panel.lit { opacity: 1; }
+    .ndp-item {
+      padding: 1.2rem 1.8rem;
+      background: rgba(10,9,8,0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(184,132,42,0.22);
+      border-left: 3px solid var(--ouro);
+      min-width: 220px;
+    }
+    .ndp-val {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.8rem; font-weight: 700;
+      color: var(--ouro-claro); line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .ndp-label {
+      font-size: 0.78rem; line-height: 1.5;
+      color: rgba(245,240,232,0.72); font-weight: 400;
+    }
+
+    @media (max-width: 900px) {
+      .neuro-data-panel { display: none; }
+      .neuro-quote { font-size: clamp(2.2rem, 8vw, 3.5rem); }
+    }
+
+    /* ── CTA ── */
+    .cta-panel { background: var(--preto); border-top: 1px solid var(--borda); }
+    .cta-inner { max-width: 780px; }
+    .cta-h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 700; line-height: 1.1;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.5rem;
+    }
+    .cta-h2 em { font-style: italic; color: var(--ouro-claro); }
+    .cta-sub {
+      font-size: 1.1rem; line-height: 1.85;
+      color: rgba(245,240,232,0.82);
+      font-weight: 400; margin-bottom: 3.5rem;
+      max-width: 560px;
+    }
+    .cta-sub strong { color: var(--branco); font-weight: 500; }
+    .form-wrap { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(245,240,232,0.65);
+    }
+    .field input, .field select, .field textarea {
+      background: rgba(245,240,232,0.06);
+      border: 1px solid rgba(184,132,42,0.35);
+      color: var(--branco);
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem; font-weight: 400;
+      padding: 0.95rem 1.2rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--ouro-claro);
+      background: rgba(184,132,42,0.10);
+    }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(245,240,232,0.38); }
+    .field select option { background: #1a1510; }
+    .field textarea { min-height: 100px; resize: vertical; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050403;
+      border-top: 1px solid var(--borda);
+      padding: 3rem 5vw;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem; font-weight: 700;
+      color: var(--ouro-claro);
+      letter-spacing: 0.06em;
+    }
+    .footer-tagline { font-size: 0.82rem; color: rgba(245,240,232,0.45); margin-top: 0.3rem; font-style: italic; }
+    footer p { font-size: 0.82rem; color: rgba(245,240,232,0.38); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.85s ease, transform 0.85s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+    .reveal-d4 { transition-delay: 0.4s; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── RESPONSIVE TABLET ── */
+    @media (max-width: 900px) {
+      nav { mix-blend-mode: normal; background: rgba(10,9,8,0.95); backdrop-filter: blur(12px); }
+      .nav-links { display: none; }
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+
+      .panel { padding: 10vh 6vw; }
+
+      /* Hero */
+      .hero-h1 { font-size: clamp(3rem, 11vw, 5rem); }
+      .hero-sub-row { grid-template-columns: 1fr; gap: 2rem; margin-top: 3rem; }
+      .hero-sub { font-size: 1.05rem; }
+
+      /* Números — 1 coluna no mobile, legível */
+      .numeros-grid {
+        grid-template-columns: 1fr;
+        border-left: none;
+      }
+      .num-item {
+        padding: 2rem 1.5rem;
+        border-left: 1px solid rgba(10,9,8,0.12);
+        border-right: 1px solid rgba(10,9,8,0.12);
+        border-top: 1px solid rgba(10,9,8,0.12);
+        border-bottom: none;
+      }
+      .num-item:last-child { border-bottom: 1px solid rgba(10,9,8,0.12); }
+      .num-val { font-size: 3rem; }
+      .num-label { font-size: 1rem; }
+
+      /* Statement */
+      .statement-h2 { font-size: clamp(2rem, 8vw, 3rem); }
+      .statement-body { grid-template-columns: 1fr; gap: 2.5rem; }
+      .statement-p { font-size: 1.05rem; }
+
+      /* Prob cards */
+      .prob-card { padding: 1.5rem; }
+      .prob-card h4 { font-size: 1.05rem; }
+      .prob-card p { font-size: 1rem; }
+
+      /* Solução */
+      .sol-cards { grid-template-columns: 1fr; }
+      .sol-card { padding: 2rem 1.5rem; }
+      .sol-card h3 { font-size: 1.2rem; }
+      .sol-card p { font-size: 1rem; }
+
+      /* Processo */
+      .step-row { grid-template-columns: 3.5rem 1fr; gap: 1.2rem; padding: 2rem 0; }
+      .step-n { font-size: 2rem; }
+      .step-content h3 { font-size: 1.1rem; }
+      .step-content p { font-size: 1rem; }
+
+      /* Comparativo */
+      .comp-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .comp-row { padding: 1rem 1.2rem; gap: 0.8rem; }
+      .c-bad { font-size: 0.9rem; }
+      .c-good { font-size: 0.9rem; }
+      .comp-header span { font-size: 0.75rem; }
+
+      /* Diferenciais */
+      .diff-item { padding: 1.1rem 1.2rem; }
+      .diff-item p { font-size: 1rem; }
+
+      /* CTA */
+      .cta-h2 { font-size: clamp(1.8rem, 7vw, 2.8rem); }
+      .cta-sub { font-size: 1.05rem; }
+      .form-row { grid-template-columns: 1fr; }
+
+      /* Quote */
+      .quote-text { font-size: clamp(1.8rem, 7vw, 3rem); }
+    }
+
+    /* ── RESPONSIVE MOBILE PEQUENO ── */
+    @media (max-width: 480px) {
+      .panel { padding: 8vh 5vw; }
+      .hero-h1 { font-size: clamp(2.5rem, 12vw, 3.5rem); line-height: 1.0; }
+      .hero-eyebrow span { font-size: 0.68rem; letter-spacing: 0.12em; }
+      .hero-sub { font-size: 1rem; }
+      .num-val { font-size: 2.6rem; }
+      .num-label { font-size: 0.95rem; }
+      .statement-h2 { font-size: clamp(1.8rem, 9vw, 2.5rem); }
+      .statement-p { font-size: 1rem; }
+      .comp-header { padding: 1rem; }
+      .comp-row { padding: 0.9rem 1rem; grid-template-columns: 1fr 2.5rem 1fr; gap: 0.5rem; }
+      .c-bad, .c-good { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Treebo</a>
+  <ul class="nav-links">
+    <li><a href="#problema">O Problema</a></li>
+    <li><a href="#solucao">A Solução</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#contato" class="nav-cta">Falar com Especialista</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="panel hero" id="inicio">
+  <div class="hero-noise"></div>
+  <div class="hero-line-v"></div>
+
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-line"></div>
+    <span>Ciência Emocional · Alta Performance Corporativa</span>
+  </div>
+
+  <h1 class="hero-h1">
+    O emocional<br/>
+    <span class="italic">ganha</span><br/>
+    qualquer jogo.
+  </h1>
+
+  <div class="hero-sub-row">
+    <p class="hero-sub">
+      Você pode ter a estratégia, o capital e os melhores talentos técnicos do mercado. <strong>Mas é o fator emocional que decide quem entrega resultado sob pressão</strong> — e quem paralisa sua operação sem que você perceba a tempo.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#contato" class="btn-main">Eliminar o Risco Agora</a>
+      <a href="#solucao" class="btn-ghost">Ver a Metodologia →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── NÚMEROS ── -->
+<section class="numeros-panel">
+  <div class="numeros-grid reveal">
+    <div class="num-item">
+      <div class="num-val">R$<span>160k</span><span style="font-size:2rem;">+</span></div>
+      <div class="num-label">custo médio de uma contratação errada em posição de liderança — fora o tempo perdido e o estrago na equipe</div>
+    </div>
+    <div class="num-item">
+      <div class="num-val"><span>87</span>%</div>
+      <div class="num-label">de aumento na retenção de lideranças estratégicas após avaliação emocional Treebo</div>
+    </div>
+    <div class="num-item">
+      <div class="num-val"><span>3</span>×</div>
+      <div class="num-label">mais produtividade em equipes com compatibilidade emocional validada entre gestor e colaborador</div>
+    </div>
+    <div class="num-item">
+      <div class="num-val"><span>0</span>%</div>
+      <div class="num-label">de margem para que candidatos manipulem o resultado do protocolo Treebo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEMA ── -->
+<section class="panel statement" id="problema">
+  <div class="statement-inner">
+    <div class="section-tag reveal">
+      <div class="tag-line"></div>
+      <span>O Custo Oculto</span>
+    </div>
+    <h2 class="statement-h2 reveal reveal-d1">
+      A técnica coloca.<br/>
+      O emocional <em>derruba.</em>
+    </h2>
+    <div class="statement-body reveal reveal-d2">
+      <div>
+        <p class="statement-p">
+          Você já viveu esse roteiro. Contrata alguém com currículo impecável, referências sólidas, entrevistas brilhantes. Em seis meses o problema está instalado: <strong>a equipe perdeu ritmo, o gestor está sobrecarregado, as metas comprometidas.</strong>
+        </p>
+        <p class="statement-p" style="margin-top: 1.5rem;">
+          O problema nunca foi técnico. Foi emocional — e não havia nenhum instrumento no seu processo capaz de detectar isso antes da contratação. Você não pode controlar o mercado, a concorrência ou a economia. <strong>Mas pode controlar quem senta nas cadeiras críticas do seu negócio.</strong>
+        </p>
+      </div>
+      <div class="prob-cards-grid">
+        <div class="prob-card">
+          <div class="prob-tag">Erro 01</div>
+          <h4>Testes de perfil são ensaiáveis</h4>
+          <p>Qualquer executivo sênior sabe responder um DISC ou MBTI para parecer o candidato ideal. O resultado final agrada o RH — mas não reflete a realidade da operação.</p>
+        </div>
+        <div class="prob-card">
+          <div class="prob-tag">Erro 02</div>
+          <h4>Incompatibilidade gestor × equipe é sistêmica</h4>
+          <p>Um líder centralizador com uma equipe que precisa de autonomia gera paralisia sistêmica. Isso não é azar — é uma falha de diagnóstico que custa caro demais para ser ignorada.</p>
+        </div>
+        <div class="prob-card">
+          <div class="prob-tag">Erro 03</div>
+          <h4>Cada negócio exige um perfil emocional diferente</h4>
+          <p>Empresa em expansão acelerada precisa de líderes que performam no caos. Operação madura precisa de quem sustenta processos. Confundir esses perfis compromete diretamente o seu resultado.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOLUÇÃO ── -->
+<section class="panel solucao-panel" id="solucao">
+  <div class="section-tag reveal">
+    <div class="tag-line"></div>
+    <span>A Metodologia</span>
+  </div>
+  <h2 class="statement-h2 reveal reveal-d1">
+    Análise psicológica<br/>
+    que não pode ser <em>forjada.</em>
+  </h2>
+  <div class="sol-cards reveal reveal-d2">
+    <div class="sol-card">
+      <div class="sol-num">01</div>
+      <h3>Avaliação Profunda</h3>
+      <p>Protocolo de análise psicológica conduzido exclusivamente por psicólogos credenciados. Respostas ensaiadas não passam. O que emerge é a estrutura emocional real do profissional — não a versão preparada para entrevista.</p>
+    </div>
+    <div class="sol-card">
+      <div class="sol-num">02</div>
+      <h3>Engenharia de Acesso</h3>
+      <p>Mapeamos o perfil emocional do gestor antes de avaliar qualquer candidato. O resultado não é apenas "bom ou ruim" — é compatível ou não com a liderança e a cultura que já existem no seu negócio.</p>
+    </div>
+    <div class="sol-card">
+      <div class="sol-num">03</div>
+      <h3>Aderência Real à Função</h3>
+      <p>Identificamos com precisão clínica se o profissional tem predisposição emocional para o cargo: pressão alta, ambiguidade constante, liderança de times, gestão de crise ou ambiente estável.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESSO ── -->
+<section class="panel processo-panel" id="processo">
+  <div class="statement-inner">
+    <div class="section-tag reveal">
+      <div class="tag-line"></div>
+      <span>O Processo</span>
+    </div>
+    <h2 class="statement-h2 reveal reveal-d1">
+      Previsibilidade<br/>de ponta a ponta.
+    </h2>
+    <div class="steps-list reveal reveal-d2">
+      <div class="step-row">
+        <div class="step-n">01</div>
+        <div class="step-content">
+          <h3>Diagnóstico do Ecossistema</h3>
+          <p>Entendemos a fundo a cultura da empresa, o nível de exigência do cargo e o que significa sucesso nessa posição dentro do seu contexto específico de negócio. Sem atalhos, sem templates genéricos.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-n">02</div>
+        <div class="step-content">
+          <h3>Mapeamento da Liderança</h3>
+          <p>Avaliamos o perfil emocional do gestor responsável pela área. Ele é o ponto de referência para toda a análise de compatibilidade que vem a seguir — e o fator mais ignorado nos processos convencionais.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-n">03</div>
+        <div class="step-content">
+          <h3>Auditoria Psicológica Profunda</h3>
+          <p>O candidato ou colaborador é submetido ao protocolo Treebo, conduzido estritamente por psicólogos habilitados. Sem plataformas automatizadas. Sem consultores sem formação. Sem resultado que possa ser forjado.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-n">04</div>
+        <div class="step-content">
+          <h3>Dossiê Executivo</h3>
+          <p>Entrega de laudo orientado a negócio: aderência real ao cargo, compatibilidade com o gestor, pontos de atenção e recomendações práticas para a sua tomada de decisão. Não gráficos decorativos — substância real.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPARATIVO ── -->
+<section class="panel comp-panel">
+  <div class="section-tag reveal">
+    <div class="tag-line"></div>
+    <span>Por que Treebo</span>
+  </div>
+  <h2 class="statement-h2 reveal reveal-d1">
+    Não é feeling.<br/>
+    É <em>ciência aplicada</em><br/>ao negócio.
+  </h2>
+  <div class="comp-grid reveal reveal-d2">
+    <div class="comp-table">
+      <div class="comp-header">
+        <span>Testes Convencionais</span>
+        <span></span>
+        <span>Treebo</span>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Facilmente manipulável</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Imune à dissimulação</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Superficial e genérico</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Análise psicológica profunda</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Qualquer um aplica</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Exclusivo para psicólogos</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Ignora o ecossistema interno</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Valida Gestor × Colaborador</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Cargo genérico</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Aderência exata à função</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Gráficos coloridos vagos</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Dossiê executivo acionável</div>
+      </div>
+      <div class="comp-row">
+        <div class="c-bad">Decisão baseada em feeling</div>
+        <div class="c-vs">vs</div>
+        <div class="c-good">Decisão baseada em ciência</div>
+      </div>
+    </div>
+    <div class="diff-list">
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Resultado imune à manipulação</strong> — candidatos não têm como forjar o protocolo, independente de quanto se preparem para a entrevista.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Aplicado exclusivamente por psicólogos habilitados</strong> — não por plataformas automatizadas nem por consultores sem formação clínica.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Compatibilidade real gestor × equipe</strong> — o eixo mais ignorado e mais caro das contratações corporativas. Treebo o torna mensurável.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Laudo acionável, não gráficos decorativos</strong> — você recebe o que precisa para decidir. Nada a mais, nada a menos.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-bullet">✦</div>
+        <p><strong>Protege o seu tempo</strong> — cada cadeira crítica avaliada pela Treebo é uma variável eliminada do risco operacional do seu negócio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEURO IMAGE SECTION ── -->
+<section class="neuro-section" id="neuro">
+  <div class="neuro-bg" id="neuroBg"></div>
+  <div class="neuro-overlay-1"></div>
+  <div class="neuro-overlay-2"></div>
+  <div class="neuro-overlay-gold"></div>
+  <canvas id="neuro-canvas"></canvas>
+  <div class="neuro-border-left"></div>
+
+  <div class="neuro-content">
+    <div class="neuro-tag" id="neuroTag">
+      <div class="neuro-tag-line"></div>
+      <span>O Nosso Propósito</span>
+    </div>
+    <p class="neuro-quote">
+      <span class="neuro-quote-line" id="nql1">"O emocional</span>
+      <span class="neuro-quote-line" id="nql2"><em>ganha qualquer jogo.</em>"</span>
+    </p>
+    <p class="neuro-sub" id="neuroSub">
+      Por trás de cada decisão corporativa existe um ser humano com uma estrutura emocional única. <strong>A Treebo é a única metodologia que torna esse mapa visível — e acionável.</strong>
+    </p>
+  </div>
+
+  <!-- Painel de dados flutuante -->
+  <div class="neuro-data-panel" id="neuroData">
+    <div class="ndp-item">
+      <div class="ndp-val">87%</div>
+      <div class="ndp-label">retenção após<br/>avaliação emocional</div>
+    </div>
+    <div class="ndp-item">
+      <div class="ndp-val">3×</div>
+      <div class="ndp-label">mais produtividade<br/>em equipes compatíveis</div>
+    </div>
+    <div class="ndp-item">
+      <div class="ndp-val">0%</div>
+      <div class="ndp-label">margem de<br/>manipulação do protocolo</div>
+    </div>
+  </div>
+
+  <div class="neuro-scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-hint-text">Continue</span>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="panel cta-panel" id="contato">
+  <div class="cta-inner">
+    <div class="section-tag reveal">
+      <div class="tag-line"></div>
+      <span>Falar com Especialista</span>
+    </div>
+    <h2 class="cta-h2 reveal reveal-d1">
+      Sua empresa é grande demais<br/>
+      para depender de <em>achismos.</em>
+    </h2>
+    <p class="cta-sub reveal reveal-d2">
+      Cada cadeira crítica preenchida com a análise Treebo é uma variável eliminada do risco operacional. <strong>Fale com a nossa equipe — entendemos a complexidade da sua operação.</strong>
+    </p>
+    <div class="form-wrap reveal reveal-d3">
+      <div class="form-row">
+        <div class="field">
+          <label>Seu Nome</label>
+          <input type="text" placeholder="Nome completo"/>
+        </div>
+        <div class="field">
+          <label>Empresa</label>
+          <input type="text" placeholder="Nome da empresa"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>E-mail Corporativo</label>
+          <input type="email" placeholder="seu@empresa.com.br"/>
+        </div>
+        <div class="field">
+          <label>Cargo</label>
+          <input type="text" placeholder="Seu cargo"/>
+        </div>
+      </div>
+      <div class="field">
+        <label>Necessidade Principal</label>
+        <select>
+          <option value="">Selecione o seu cenário...</option>
+          <option>Avaliação profunda de candidato para posição crítica</option>
+          <option>Auditoria emocional da liderança atual</option>
+          <option>Resolução de atrito sistêmico (Gestor × Equipe)</option>
+          <option>Reestruturação organizacional</option>
+          <option>Outro cenário</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Contexto do Negócio (Opcional)</label>
+        <textarea placeholder="Descreva brevemente o momento do seu negócio e o principal gargalo que deseja resolver..."></textarea>
+      </div>
+      <button class="btn-main" style="margin-top:0.5rem; border:none; cursor:none;"
+        onclick="alert('Solicitação recebida. Nossa equipe fará contato em até 24 horas.')">
+        Solicitar Contato Executivo →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div>
+    <div class="footer-logo">Treebo</div>
+    <div class="footer-tagline">"O emocional ganha qualquer jogo."</div>
+  </div>
+  <p>© 2026 Treebo. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+  // ── CURSOR ──
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // ── SCROLL REVEAL GERAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
+
+  // ── NEURO SECTION: REVEAL SEQUENCIAL ──
+  const neuroSection = document.getElementById('neuro');
+  const neuroTag = document.getElementById('neuroTag');
+  const nql1 = document.getElementById('nql1');
+  const nql2 = document.getElementById('nql2');
+  const neuroSub = document.getElementById('neuroSub');
+  const neuroData = document.getElementById('neuroData');
+
+  const neuroObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => neuroTag.classList.add('lit'), 100);
+        setTimeout(() => nql1.classList.add('lit'), 350);
+        setTimeout(() => nql2.classList.add('lit'), 550);
+        setTimeout(() => neuroSub.classList.add('lit'), 800);
+        setTimeout(() => neuroData.classList.add('lit'), 1000);
+        neuroObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.25 });
+  if (neuroSection) neuroObs.observe(neuroSection);
+
+  // ── PARALLAX DA IMAGEM AO SCROLL ──
+  const neuroBg = document.getElementById('neuroBg');
+  function updateParallax() {
+    if (!neuroSection || !neuroBg) return;
+    const rect = neuroSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (rect.bottom < 0 || rect.top > vh) return;
+    const progress = (vh - rect.top) / (vh + rect.height);
+    const shift = (progress - 0.5) * 12;
+    neuroBg.style.transform = `translateY(${shift}%)`;
+  }
+  window.addEventListener('scroll', updateParallax, { passive: true });
+  updateParallax();
+
+  // ── PARTÍCULAS NEURAIS NO CANVAS ──
+  const canvas = document.getElementById('neuro-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = neuroSection.offsetWidth;
+      canvas.height = neuroSection.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Nós neurais
+    const NODE_COUNT = 38;
+    const nodes = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+      nodes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        r: Math.random() * 2.5 + 1,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: Math.random() * 0.02 + 0.008
+      });
+    }
+
+    // Pulsos elétricos viajando entre nós conectados
+    const pulses = [];
+    function spawnPulse() {
+      const fromIdx = Math.floor(Math.random() * NODE_COUNT);
+      const toIdx = Math.floor(Math.random() * NODE_COUNT);
+      if (fromIdx === toIdx) return;
+      const dist = Math.hypot(nodes[fromIdx].x - nodes[toIdx].x, nodes[fromIdx].y - nodes[toIdx].y);
+      if (dist > 260) return;
+      pulses.push({ from: fromIdx, to: toIdx, t: 0, speed: Math.random() * 0.008 + 0.004 });
+    }
+
+    let frame = 0;
+    function drawNeuro() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Mover nós
+      nodes.forEach(n => {
+        n.x += n.vx; n.y += n.vy;
+        n.pulse += n.pulseSpeed;
+        if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+        if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+      });
+
+      // Conexões entre nós próximos
+      for (let i = 0; i < NODE_COUNT; i++) {
+        for (let j = i + 1; j < NODE_COUNT; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 200) {
+            const alpha = (1 - dist / 200) * 0.18;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(184,132,42,${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Pulsos elétricos
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const p = pulses[i];
+        p.t += p.speed;
+        if (p.t >= 1) { pulses.splice(i, 1); continue; }
+        const from = nodes[p.from], to = nodes[p.to];
+        const px = from.x + (to.x - from.x) * p.t;
+        const py = from.y + (to.y - from.y) * p.t;
+        const grd = ctx.createRadialGradient(px, py, 0, px, py, 6);
+        grd.addColorStop(0, `rgba(212,168,75,${0.9 * (1 - Math.abs(p.t - 0.5) * 2)})`);
+        grd.addColorStop(1, 'rgba(184,132,42,0)');
+        ctx.beginPath();
+        ctx.arc(px, py, 6, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
+        ctx.fill();
+      }
+
+      // Nós
+      nodes.forEach(n => {
+        const pulseFactor = 1 + Math.sin(n.pulse) * 0.3;
+        const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3 * pulseFactor);
+        grd.addColorStop(0, 'rgba(212,168,75,0.7)');
+        grd.addColorStop(1, 'rgba(184,132,42,0)');
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r * pulseFactor, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
+        ctx.fill();
+      });
+
+      // Spawn pulso a cada ~90 frames
+      frame++;
+      if (frame % 90 === 0) spawnPulse();
+
+      requestAnimationFrame(drawNeuro);
+    }
+    drawNeuro();
+  }
+</script>
+</body>
+</html>

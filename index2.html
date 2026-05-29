@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TReebo | Soluções Estratégicas</title>
+    <style>
+        /* Estilos Globais */
+        :root {
+            --primary-color: #0F172A; /* Azul corporativo escuro */
+            --accent-color: #2563EB;  /* Azul de destaque para CTAs */
+            --text-light: #F8FAFC;
+            --text-dark: #334155;
+            --bg-gray: #F1F5F9;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #1D4ED8;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: var(--text-light);
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        /* Seção de Soluções */
+        .solutions {
+            padding: 5rem 0;
+            background-color: var(--bg-gray);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent-color);
+        }
+
+        /* Metodologia */
+        .methodology {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        /* Casos de Sucesso */
+        .social-proof {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .social-proof h2 {
+            color: white;
+        }
+
+        .testimonial {
+            font-size: 1.5rem;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: #020617;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Transformando [Problema do Cliente] em Resultados Previsíveis</h1>
+            <p>Apoiamos diretores e executivos a estruturar, escalar e otimizar as operações através de abordagens testadas no mercado.</p>
+            <a href="#contato" class="btn">Agende uma Conversa Estratégica</a>
+        </div>
+    </section>
+
+    <!-- 2. Soluções Orientadas a Desafios -->
+    <section class="solutions">
+        <div class="container">
+            <div class="section-header">
+                <h2>Áreas de Impacto</h2>
+                <p>Nossas soluções são desenhadas para resolver os gargalos mais críticos do seu negócio.</p>
+            </div>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Eficiência Operacional</h3>
+                    <p>Redução de custos e otimização de processos para garantir que sua equipe produza mais com os recursos atuais. Ideal para empresas em fase de escala.</p>
+                </div>
+                <div class="card">
+                    <h3>Desenvolvimento de Lideranças</h3>
+                    <p>Capacitação do corpo gerencial para tomar decisões estratégicas e autônomas, liberando o C-level para focar no crescimento macro.</p>
+                </div>
+                <div class="card">
+                    <h3>Crescimento Sustentável</h3>
+                    <p>Implementação de métricas e frameworks de gestão que garantem previsibilidade de caixa e expansão segura do modelo de negócios.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. A Metodologia TReebo -->
+    <section class="methodology">
+        <div class="container">
+            <div class="section-header">
+                <h2>Como Conduzimos a Transformação</h2>
+                <p>Um processo consultivo e pragmático focado em retorno sobre o investimento.</p>
+            </div>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>Diagnóstico Executivo</h3>
+                        <p>Mapeamos os gargalos silenciosos da operação através de uma imersão nos dados e processos da sua empresa.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>Plano de Ação Tático</h3>
+                        <p>Desenvolvemos uma rota clara de implementação, priorizando ações que geram caixa ou reduzem custos no curto prazo.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>Acompanhamento de Métricas</h3>
+                        <p>Monitoramos a execução junto à sua equipe, ajustando a rota com base em KPIs reais até atingirmos o objetivo acordado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Prova Social e Autoridade -->
+    <section class="social-proof">
+        <div class="container">
+            <h2>Resultados Comprovados</h2>
+            <p class="testimonial">"A TReebo mudou a forma como nossa diretoria enxerga a operação. Reduzimos nossos gargalos em 40% no primeiro semestre e ganhamos clareza para escalar o negócio de forma segura."</p>
+            <p><strong>— [Nome do Cliente], Diretor(a) da [Nome da Empresa]</strong></p>
+        </div>
+    </section>
+
+    <!-- Footer Simples -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 TReebo. Todos os direitos reservados. Foco no seu resultado.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

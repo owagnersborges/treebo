@@ -98,17 +98,59 @@
       background: var(--preto);
       overflow: hidden;
     }
+    /* Imagem de fundo com parallax */
+    .hero-bg-img {
+      position: absolute; inset: -15%;
+      background-image: url('https://raw.githubusercontent.com/owagnersborges/treebo/main/treebo-neurowork.png');
+      background-size: cover;
+      background-position: center 30%;
+      will-change: transform;
+    }
+    /* Overlays cinematográficos sobre a imagem */
+    .hero-overlay-1 {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(10,9,8,0.92) 0%,
+        rgba(10,9,8,0.72) 40%,
+        rgba(10,9,8,0.55) 65%,
+        rgba(10,9,8,0.88) 100%
+      );
+    }
+    .hero-overlay-2 {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,9,8,0.55) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(10,9,8,0.85) 100%
+      );
+    }
+    .hero-overlay-gold {
+      position: absolute; inset: 0;
+      background: radial-gradient(
+        ellipse 65% 55% at 65% 45%,
+        rgba(184,132,42,0.10) 0%,
+        transparent 70%
+      );
+    }
+    /* Canvas neural sobre a imagem */
+    #hero-canvas {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
     .hero-noise {
       position: absolute; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.025; pointer-events: none;
+      opacity: 0.02; pointer-events: none;
     }
     .hero-line-v {
       position: absolute;
-      top: 0; bottom: 0;
-      left: 0;
+      top: 0; bottom: 0; left: 0;
       width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(184,132,42,0.35) 30%, rgba(184,132,42,0.2) 70%, transparent);
+      background: linear-gradient(to bottom, transparent, rgba(184,132,42,0.4) 30%, rgba(184,132,42,0.2) 70%, transparent);
     }
     .hero-eyebrow {
       display: flex; align-items: center; gap: 1.2rem;
@@ -396,187 +438,6 @@
     .diff-item p { font-size: 1rem; line-height: 1.7; color: rgba(245,240,232,0.85); font-weight: 400; }
     .diff-item p strong { color: var(--branco); font-weight: 600; }
 
-    /* ── NEURO IMAGE SECTION ── */
-    .neuro-section {
-      position: relative;
-      min-height: 100vh;
-      display: flex; align-items: center;
-      overflow: hidden;
-    }
-
-    /* Imagem de fundo com parallax via JS */
-    .neuro-bg {
-      position: absolute; inset: -15%;
-      background-image: url('https://raw.githubusercontent.com/owagnersborges/treebo/main/treebo-neurowork.png');
-      background-size: cover;
-      background-position: center 30%;
-      will-change: transform;
-      transition: transform 0.05s linear;
-    }
-
-    /* Camadas de overlay sofisticadas */
-    .neuro-overlay-1 {
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        135deg,
-        rgba(10,9,8,0.88) 0%,
-        rgba(10,9,8,0.65) 40%,
-        rgba(10,9,8,0.50) 60%,
-        rgba(10,9,8,0.82) 100%
-      );
-    }
-    .neuro-overlay-2 {
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(10,9,8,0.7) 0%,
-        transparent 25%,
-        transparent 75%,
-        rgba(10,9,8,0.7) 100%
-      );
-    }
-    .neuro-overlay-gold {
-      position: absolute; inset: 0;
-      background: radial-gradient(
-        ellipse 70% 60% at 60% 50%,
-        rgba(184,132,42,0.12) 0%,
-        transparent 70%
-      );
-    }
-
-    /* Canvas de partículas neurais */
-    #neuro-canvas {
-      position: absolute; inset: 0;
-      pointer-events: none;
-      opacity: 0.55;
-    }
-
-    /* Linha de borda decorativa lateral */
-    .neuro-border-left {
-      position: absolute;
-      left: 5vw; top: 10%; bottom: 10%;
-      width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(184,132,42,0.6) 30%, rgba(184,132,42,0.3) 70%, transparent);
-    }
-
-    /* Conteúdo */
-    .neuro-content {
-      position: relative; z-index: 10;
-      padding: 12vh 5vw;
-      max-width: 820px;
-    }
-    .neuro-tag {
-      display: flex; align-items: center; gap: 1rem;
-      margin-bottom: 3rem;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .neuro-tag.lit { opacity: 1; transform: translateY(0); }
-    .neuro-tag-line { width: 40px; height: 1px; background: var(--ouro); }
-    .neuro-tag span {
-      font-size: 0.75rem; font-weight: 700;
-      letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--ouro);
-    }
-
-    .neuro-quote {
-      font-family: 'Libre Baskerville', serif;
-      font-size: clamp(2.8rem, 5.5vw, 5.5rem);
-      font-weight: 700;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: var(--branco);
-      overflow: hidden;
-    }
-    .neuro-quote-line {
-      display: block;
-      opacity: 0; transform: translateY(60px);
-      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1);
-    }
-    .neuro-quote-line.lit { opacity: 1; transform: translateY(0); }
-    .neuro-quote-line:nth-child(2) { transition-delay: 0.18s; }
-    .neuro-quote-line em {
-      font-style: italic;
-      color: var(--ouro-claro);
-    }
-
-    .neuro-sub {
-      margin-top: 2.5rem;
-      font-size: 1.05rem; line-height: 1.85;
-      color: rgba(245,240,232,0.78);
-      font-weight: 400;
-      max-width: 520px;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.8s 0.4s ease, transform 0.8s 0.4s ease;
-    }
-    .neuro-sub.lit { opacity: 1; transform: translateY(0); }
-    .neuro-sub strong { color: var(--branco); font-weight: 600; }
-
-    /* Indicador de scroll animado */
-    .neuro-scroll-hint {
-      position: absolute;
-      bottom: 3rem; left: 5vw;
-      display: flex; align-items: center; gap: 1rem;
-      z-index: 10;
-      opacity: 0; animation: fadeIn 1s 2s forwards;
-    }
-    .scroll-line {
-      width: 40px; height: 1px;
-      background: rgba(184,132,42,0.5);
-      position: relative; overflow: hidden;
-    }
-    .scroll-line::after {
-      content: '';
-      position: absolute; top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: var(--ouro);
-      animation: scrollSlide 2s 2.5s ease-in-out infinite;
-    }
-    @keyframes scrollSlide {
-      0% { left: -100%; }
-      50% { left: 100%; }
-      100% { left: 100%; }
-    }
-    .scroll-hint-text {
-      font-size: 0.65rem; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(245,240,232,0.4);
-    }
-
-    /* Painel de dados flutuante */
-    .neuro-data-panel {
-      position: absolute;
-      right: 5vw; top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
-      display: flex; flex-direction: column; gap: 1px;
-      opacity: 0; transition: opacity 1s 0.6s ease;
-    }
-    .neuro-data-panel.lit { opacity: 1; }
-    .ndp-item {
-      padding: 1.2rem 1.8rem;
-      background: rgba(10,9,8,0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(184,132,42,0.22);
-      border-left: 3px solid var(--ouro);
-      min-width: 220px;
-    }
-    .ndp-val {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 1.8rem; font-weight: 700;
-      color: var(--ouro-claro); line-height: 1;
-      margin-bottom: 0.3rem;
-    }
-    .ndp-label {
-      font-size: 0.78rem; line-height: 1.5;
-      color: rgba(245,240,232,0.72); font-weight: 400;
-    }
-
-    @media (max-width: 900px) {
-      .neuro-data-panel { display: none; }
-      .neuro-quote { font-size: clamp(2.2rem, 8vw, 3.5rem); }
-    }
-
     /* ── CTA ── */
     .cta-panel { background: var(--preto); border-top: 1px solid var(--borda); }
     .cta-inner { max-width: 780px; }
@@ -756,6 +617,11 @@
 
 <!-- ── HERO ── -->
 <section class="panel hero" id="inicio">
+  <div class="hero-bg-img" id="heroBgImg"></div>
+  <div class="hero-overlay-1"></div>
+  <div class="hero-overlay-2"></div>
+  <div class="hero-overlay-gold"></div>
+  <canvas id="hero-canvas"></canvas>
   <div class="hero-noise"></div>
   <div class="hero-line-v"></div>
 
@@ -994,51 +860,6 @@
   </div>
 </section>
 
-<!-- ── NEURO IMAGE SECTION ── -->
-<section class="neuro-section" id="neuro">
-  <div class="neuro-bg" id="neuroBg"></div>
-  <div class="neuro-overlay-1"></div>
-  <div class="neuro-overlay-2"></div>
-  <div class="neuro-overlay-gold"></div>
-  <canvas id="neuro-canvas"></canvas>
-  <div class="neuro-border-left"></div>
-
-  <div class="neuro-content">
-    <div class="neuro-tag" id="neuroTag">
-      <div class="neuro-tag-line"></div>
-      <span>O Nosso Propósito</span>
-    </div>
-    <p class="neuro-quote">
-      <span class="neuro-quote-line" id="nql1">"O emocional</span>
-      <span class="neuro-quote-line" id="nql2"><em>ganha qualquer jogo.</em>"</span>
-    </p>
-    <p class="neuro-sub" id="neuroSub">
-      Por trás de cada decisão corporativa existe um ser humano com uma estrutura emocional única. <strong>A Treebo é a única metodologia que torna esse mapa visível — e acionável.</strong>
-    </p>
-  </div>
-
-  <!-- Painel de dados flutuante -->
-  <div class="neuro-data-panel" id="neuroData">
-    <div class="ndp-item">
-      <div class="ndp-val">87%</div>
-      <div class="ndp-label">retenção após<br/>avaliação emocional</div>
-    </div>
-    <div class="ndp-item">
-      <div class="ndp-val">3×</div>
-      <div class="ndp-label">mais produtividade<br/>em equipes compatíveis</div>
-    </div>
-    <div class="ndp-item">
-      <div class="ndp-val">0%</div>
-      <div class="ndp-label">margem de<br/>manipulação do protocolo</div>
-    </div>
-  </div>
-
-  <div class="neuro-scroll-hint">
-    <div class="scroll-line"></div>
-    <span class="scroll-hint-text">Continue</span>
-  </div>
-</section>
-
 <!-- ── CTA ── -->
 <section class="panel cta-panel" id="contato">
   <div class="cta-inner">
@@ -1127,111 +948,85 @@
   }, { threshold: 0.1 });
   reveals.forEach(el => obs.observe(el));
 
-  // ── NEURO SECTION: REVEAL SEQUENCIAL ──
-  const neuroSection = document.getElementById('neuro');
-  const neuroTag = document.getElementById('neuroTag');
-  const nql1 = document.getElementById('nql1');
-  const nql2 = document.getElementById('nql2');
-  const neuroSub = document.getElementById('neuroSub');
-  const neuroData = document.getElementById('neuroData');
-
-  const neuroObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        setTimeout(() => neuroTag.classList.add('lit'), 100);
-        setTimeout(() => nql1.classList.add('lit'), 350);
-        setTimeout(() => nql2.classList.add('lit'), 550);
-        setTimeout(() => neuroSub.classList.add('lit'), 800);
-        setTimeout(() => neuroData.classList.add('lit'), 1000);
-        neuroObs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.25 });
-  if (neuroSection) neuroObs.observe(neuroSection);
-
-  // ── PARALLAX DA IMAGEM AO SCROLL ──
-  const neuroBg = document.getElementById('neuroBg');
-  function updateParallax() {
-    if (!neuroSection || !neuroBg) return;
-    const rect = neuroSection.getBoundingClientRect();
-    const vh = window.innerHeight;
-    if (rect.bottom < 0 || rect.top > vh) return;
-    const progress = (vh - rect.top) / (vh + rect.height);
-    const shift = (progress - 0.5) * 12;
-    neuroBg.style.transform = `translateY(${shift}%)`;
+  // ── PARALLAX DA IMAGEM DO HERO ──
+  const heroBgImg = document.getElementById('heroBgImg');
+  const heroSection = document.getElementById('inicio');
+  function updateHeroParallax() {
+    if (!heroSection || !heroBgImg) return;
+    const scrollY = window.scrollY;
+    const heroH = heroSection.offsetHeight;
+    if (scrollY > heroH * 1.5) return;
+    const shift = scrollY * 0.35;
+    heroBgImg.style.transform = `translateY(${shift}px)`;
   }
-  window.addEventListener('scroll', updateParallax, { passive: true });
-  updateParallax();
+  window.addEventListener('scroll', updateHeroParallax, { passive: true });
+  updateHeroParallax();
 
-  // ── PARTÍCULAS NEURAIS NO CANVAS ──
-  const canvas = document.getElementById('neuro-canvas');
-  if (canvas) {
+  // ── PARTÍCULAS NEURAIS NO HERO ──
+  const canvas = document.getElementById('hero-canvas');
+  if (canvas && heroSection) {
     const ctx = canvas.getContext('2d');
 
-    function resize() {
-      canvas.width = neuroSection.offsetWidth;
-      canvas.height = neuroSection.offsetHeight;
+    function resizeCanvas() {
+      canvas.width = heroSection.offsetWidth;
+      canvas.height = heroSection.offsetHeight;
     }
-    resize();
-    window.addEventListener('resize', resize);
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
-    // Nós neurais
-    const NODE_COUNT = 38;
+    const NODE_COUNT = 42;
     const nodes = [];
     for (let i = 0; i < NODE_COUNT; i++) {
       nodes.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 2.5 + 1,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 2.2 + 0.8,
         pulse: Math.random() * Math.PI * 2,
-        pulseSpeed: Math.random() * 0.02 + 0.008
+        pulseSpeed: Math.random() * 0.018 + 0.006
       });
     }
 
-    // Pulsos elétricos viajando entre nós conectados
     const pulses = [];
     function spawnPulse() {
       const fromIdx = Math.floor(Math.random() * NODE_COUNT);
       const toIdx = Math.floor(Math.random() * NODE_COUNT);
       if (fromIdx === toIdx) return;
       const dist = Math.hypot(nodes[fromIdx].x - nodes[toIdx].x, nodes[fromIdx].y - nodes[toIdx].y);
-      if (dist > 260) return;
-      pulses.push({ from: fromIdx, to: toIdx, t: 0, speed: Math.random() * 0.008 + 0.004 });
+      if (dist > 240) return;
+      pulses.push({ from: fromIdx, to: toIdx, t: 0, speed: Math.random() * 0.007 + 0.003 });
     }
 
     let frame = 0;
-    function drawNeuro() {
+    function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Mover nós
       nodes.forEach(n => {
         n.x += n.vx; n.y += n.vy;
         n.pulse += n.pulseSpeed;
-        if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+        if (n.x < 0 || n.x > canvas.width)  n.vx *= -1;
         if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
       });
 
-      // Conexões entre nós próximos
+      // Filamentos entre nós próximos
       for (let i = 0; i < NODE_COUNT; i++) {
         for (let j = i + 1; j < NODE_COUNT; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < 200) {
-            const alpha = (1 - dist / 200) * 0.18;
+          if (dist < 190) {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(184,132,42,${alpha})`;
-            ctx.lineWidth = 0.8;
+            ctx.strokeStyle = `rgba(184,132,42,${(1 - dist / 190) * 0.22})`;
+            ctx.lineWidth = 0.7;
             ctx.stroke();
           }
         }
       }
 
-      // Pulsos elétricos
+      // Pulsos elétricos viajando
       for (let i = pulses.length - 1; i >= 0; i--) {
         const p = pulses[i];
         p.t += p.speed;
@@ -1239,34 +1034,35 @@
         const from = nodes[p.from], to = nodes[p.to];
         const px = from.x + (to.x - from.x) * p.t;
         const py = from.y + (to.y - from.y) * p.t;
-        const grd = ctx.createRadialGradient(px, py, 0, px, py, 6);
-        grd.addColorStop(0, `rgba(212,168,75,${0.9 * (1 - Math.abs(p.t - 0.5) * 2)})`);
+        const fade = 1 - Math.abs(p.t - 0.5) * 2;
+        const grd = ctx.createRadialGradient(px, py, 0, px, py, 7);
+        grd.addColorStop(0, `rgba(212,168,75,${0.95 * fade})`);
+        grd.addColorStop(0.5, `rgba(184,132,42,${0.4 * fade})`);
         grd.addColorStop(1, 'rgba(184,132,42,0)');
         ctx.beginPath();
-        ctx.arc(px, py, 6, 0, Math.PI * 2);
+        ctx.arc(px, py, 7, 0, Math.PI * 2);
         ctx.fillStyle = grd;
         ctx.fill();
       }
 
-      // Nós
+      // Nós com pulso
       nodes.forEach(n => {
-        const pulseFactor = 1 + Math.sin(n.pulse) * 0.3;
-        const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3 * pulseFactor);
-        grd.addColorStop(0, 'rgba(212,168,75,0.7)');
+        const pf = 1 + Math.sin(n.pulse) * 0.28;
+        const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3.5 * pf);
+        grd.addColorStop(0, 'rgba(212,168,75,0.75)');
+        grd.addColorStop(0.4, 'rgba(184,132,42,0.2)');
         grd.addColorStop(1, 'rgba(184,132,42,0)');
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r * pulseFactor, 0, Math.PI * 2);
+        ctx.arc(n.x, n.y, n.r * pf, 0, Math.PI * 2);
         ctx.fillStyle = grd;
         ctx.fill();
       });
 
-      // Spawn pulso a cada ~90 frames
       frame++;
-      if (frame % 90 === 0) spawnPulse();
-
-      requestAnimationFrame(drawNeuro);
+      if (frame % 80 === 0) spawnPulse();
+      requestAnimationFrame(draw);
     }
-    drawNeuro();
+    draw();
   }
 </script>
 </body>
